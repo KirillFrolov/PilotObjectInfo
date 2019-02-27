@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PilotObjectInfo", "PilotObjectInfo\PilotObjectInfo.csproj", "{59B82F06-41DA-43F0-B5D4-D2A45BA30A8B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{59B82F06-41DA-43F0-B5D4-D2A45BA30A8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59B82F06-41DA-43F0-B5D4-D2A45BA30A8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59B82F06-41DA-43F0-B5D4-D2A45BA30A8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59B82F06-41DA-43F0-B5D4-D2A45BA30A8B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C821C64B-4BFC-4FB0-843F-BF9AC0F8CD28}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 2
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://10.1.5.121:8080/tfs/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = PilotObjectInfo\\PilotObjectInfo.csproj
+		SccProjectName1 = PilotObjectInfo
+		SccLocalPath1 = PilotObjectInfo
+	EndGlobalSection
+EndGlobal

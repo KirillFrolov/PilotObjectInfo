@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="PilotObjectInfo.Views.AccessView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PilotObjectInfo.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <DataGrid ItemsSource="{Binding Access}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="RecordOwner" 
+                                    Binding="{Binding RecordOwner, Mode=OneWay}"/>
+                <DataGridTextColumn Header="OrgUnitId"
+                                    Binding="{Binding OrgUnitId, Mode=OneWay}"/>
+                <DataGridTextColumn Header="InheritanceSource"
+                                    Binding="{Binding InheritanceSource, Mode=OneWay}"/>
+                <DataGridTextColumn Header="AccessLevel"
+                                    Binding="{Binding Access.AccessLevel, Mode=OneWay}"/>
+                <DataGridTextColumn Header="IsInheritable"
+                                    Binding="{Binding Access.IsInheritable, Mode=OneWay}"/>
+                <DataGridTextColumn Header="IsInherited"
+                                    Binding="{Binding Access.IsInherited, Mode=OneWay}"/>
+                <DataGridTextColumn Header="ValidThrough"
+                                    Binding="{Binding Access.ValidThrough, Mode=OneWay}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

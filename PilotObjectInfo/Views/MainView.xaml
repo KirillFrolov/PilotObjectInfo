@@ -1,0 +1,95 @@
+﻿<Window x:Class="PilotObjectInfo.Views.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PilotObjectInfo.Views"
+             mc:Ignorable="d" 
+        Title="Pilot object Info"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0"
+                   Grid.Column="0"
+                   Text="Id"/>
+        <TextBox Grid.Row="0"
+                   Grid.Column="1"
+                   Text="{Binding Id, Mode=OneWay}"/>
+        <TextBlock Grid.Row="1"
+                   Grid.Column="0"
+                   Text="Display name"/>
+        <TextBox Grid.Row="1"
+                   Grid.Column="1"
+                   Text="{Binding DisplayName, Mode=OneWay}"/>
+        <TextBlock Grid.Row="2"
+                   Grid.Column="0"
+                   Text="Created"/>
+        <TextBox Grid.Row="2"
+                   Grid.Column="1"
+                   Text="{Binding Created, Mode=OneWay}"/>
+        <TextBlock Grid.Row="3"
+                   Grid.Column="0"
+                   Text="IsSecret"/>
+        <TextBox Grid.Row="3"
+                   Grid.Column="1"
+                   Text="{Binding IsSecret, Mode=OneWay}"/>
+        <TextBlock Grid.Row="4"
+                   Grid.Column="0"
+                   Text="ParentId"/>
+        <TextBox Grid.Row="4"
+                   Grid.Column="1"
+                   Text="{Binding ParentId, Mode=OneWay}"/>
+
+        <TabControl Grid.Row="6"
+                    Grid.ColumnSpan="2"
+                    Margin="0,10,0,0">
+            <TabItem Header="Attributes">
+                <local:AttributesView DataContext="{Binding AttributesVm, Mode=OneWay}"/>
+            </TabItem>
+            <TabItem Header="Children">
+                <local:ChildrenView DataContext="{Binding ChildrenVm, Mode=OneWay}"/>
+            </TabItem>
+            <TabItem Header="Type">
+                <local:TypeView DataContext="{Binding TypeVm, Mode=OneWay}"/>
+            </TabItem>
+            <TabItem Header="Creator">
+                <local:CreatorView DataContext="{Binding CreatorVm, Mode=OneWay}"/>
+            </TabItem>
+            <TabItem Header="State info">
+                <local:StateInfoView DataContext="{Binding StateInfoVm, Mode=OneWay}"/>
+            </TabItem>
+            <TabItem Header="Files">
+                <local:FilesView DataContext="{Binding FilesVm, Mode=OneWay}"/>
+            </TabItem>
+            <TabItem Header="Access">
+                <local:AccessView DataContext="{Binding AccessVm, Mode=OneWay}"/>
+            </TabItem>
+            <TabItem Header="Relations">
+                <local:RelationsView DataContext="{Binding RelationsVm, Mode=OneWay}"/>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
