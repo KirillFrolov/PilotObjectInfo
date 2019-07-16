@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="PilotObjectInfo.Views.PeopleView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PilotObjectInfo.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <DataGrid ItemsSource="{Binding People}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" 
+                                    Binding="{Binding Id, Mode=OneWay}"/>
+                <DataGridTextColumn Header="Login"
+                                    Binding="{Binding Login, Mode=OneWay}"/>
+                <DataGridTextColumn Header="DisplayName"
+                                    Binding="{Binding DisplayName, Mode=OneWay}"/>
+                <DataGridTextColumn Header="MainPosition"
+                                    Binding="{Binding MainPosition.Position, Mode=OneWay}"/>
+                <DataGridTextColumn Header="ActualName"
+                                    Binding="{Binding ActualName, Mode=OneWay}"/>
+                <DataGridTextColumn Header="Sid"
+                                    Binding="{Binding Sid, Mode=OneWay}"/>
+                <DataGridTextColumn Header="IsDeleted"
+                                    Binding="{Binding IsDeleted, Mode=OneWay}"/>
+                <DataGridTextColumn Header="IsAdmin"
+                                    Binding="{Binding IsAdmin, Mode=OneWay}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

@@ -35,14 +35,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ascon.Pilot.SDK, Version=18.0.10.25523, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ascon.Pilot.SDK.18.0.10.0\lib\net40-Client\Ascon.Pilot.SDK.dll</HintPath>
+    <Reference Include="Ascon.Pilot.SDK, Version=19.20.0.28911, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ascon.Pilot.SDK.19.20.0\lib\net40-Client\Ascon.Pilot.SDK.dll</HintPath>
     </Reference>
-    <Reference Include="Ascon.Pilot.Theme, Version=18.0.10.25523, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ascon.Pilot.SDK.18.0.10.0\lib\net40-Client\Ascon.Pilot.Theme.dll</HintPath>
+    <Reference Include="Ascon.Pilot.Theme, Version=19.20.0.28911, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ascon.Pilot.SDK.19.20.0\lib\net40-Client\Ascon.Pilot.Theme.dll</HintPath>
     </Reference>
-    <Reference Include="Homebrew.Mvvm, Version=1.0.6.0, Culture=neutral, PublicKeyToken=f66efc1288ca4e19, processorArchitecture=MSIL">
-      <HintPath>..\packages\Homebrew.Mvvm.1.0.6\lib\net45\Homebrew.Mvvm.dll</HintPath>
+    <Reference Include="Homebrew.Mvvm, Version=1.0.11.0, Culture=neutral, PublicKeyToken=f66efc1288ca4e19, processorArchitecture=MSIL">
+      <HintPath>..\packages\Homebrew.Mvvm.1.0.11\lib\net45\Homebrew.Mvvm.dll</HintPath>
     </Reference>
     <Reference Include="PilotHelper, Version=1.0.10.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\PilotHelper.1.0.10\lib\net452\PilotHelper.dll</HintPath>
@@ -81,13 +81,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DialogService.cs" />
+    <Compile Include="MainMenu.cs" />
     <Compile Include="ViewModels\AccessViewModel.cs" />
     <Compile Include="ViewModels\ChildrenViewModel.cs" />
     <Compile Include="ViewModels\CreatorViewModel.cs" />
     <Compile Include="ViewModels\FilesViewModel.cs" />
+    <Compile Include="ViewModels\OrgUnitsViewModel.cs" />
     <Compile Include="ViewModels\RelationsViewModel.cs" />
+    <Compile Include="ViewModels\SnapshotsViewModel.cs" />
+    <Compile Include="ViewModels\SnapshotViewModel.cs" />
     <Compile Include="ViewModels\StateInfoViewModel.cs" />
     <Compile Include="ViewModels\TypeViewModel.cs" />
+    <Compile Include="ViewModels\PeopleViewModel.cs" />
     <Compile Include="Views\AccessView.xaml.cs">
       <DependentUpon>AccessView.xaml</DependentUpon>
     </Compile>
@@ -110,8 +115,20 @@
     <Compile Include="ObjectMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="Views\OrgUnitsView.xaml.cs">
+      <DependentUpon>OrgUnitsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PeopleView.xaml.cs">
+      <DependentUpon>PeopleView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\RelationsView.xaml.cs">
       <DependentUpon>RelationsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SnapshotsView.xaml.cs">
+      <DependentUpon>SnapshotsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SnapshotView.xaml.cs">
+      <DependentUpon>SnapshotView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StateInfoView.xaml.cs">
       <DependentUpon>StateInfoView.xaml</DependentUpon>
@@ -148,7 +165,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\OrgUnitsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PeopleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\RelationsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SnapshotsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SnapshotView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -16,13 +16,15 @@ namespace PilotObjectInfo.ViewModels
         private IEnumerable<Guid> _children;
         private IObjectsRepository _objectsRepository;
         private IFileProvider _fileProvider;
+        private ITabServiceProvider _tabServiceProvider;
         private RelayCommand _showInfoCmd;
 
-        public ChildrenViewModel(IEnumerable<Guid> children,IObjectsRepository objectsRepository, IFileProvider fileProvider)
+        public ChildrenViewModel(IEnumerable<Guid> children,IObjectsRepository objectsRepository, IFileProvider fileProvider, ITabServiceProvider tabServiceProvider)
         {
             _children = children;
             _objectsRepository = objectsRepository;
             _fileProvider = fileProvider;
+            _tabServiceProvider = tabServiceProvider;
         }
 
         public IEnumerable<Guid> Children => _children;
@@ -42,7 +44,7 @@ namespace PilotObjectInfo.ViewModels
         private void DoShowInfo(object obj)
         {
             Guid id = (Guid)obj;
-           DialogService.ShowInfo(id, _objectsRepository, _fileProvider);
+           DialogService.ShowInfo(id, _objectsRepository, _fileProvider, _tabServiceProvider);
         }
     }
 }

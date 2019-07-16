@@ -26,18 +26,30 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="*"/>
+            
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Row="0"
                    Grid.Column="0"
                    Text="Id"/>
-        <TextBox Grid.Row="0"
+        <StackPanel Grid.Row="0"
                    Grid.Column="1"
-                   Text="{Binding Id, Mode=OneWay}"/>
+                    Orientation="Horizontal">
+            <TextBox Text="{Binding Id, Mode=OneWay}"/>
+            <Button Content="Go to"
+                    Command="{Binding GoToCommand}"
+                    Margin="5,0,0,0"/>
+        </StackPanel>
+
+
+
+        
+
         <TextBlock Grid.Row="1"
                    Grid.Column="0"
                    Text="Display name"/>
@@ -62,9 +74,15 @@
         <TextBox Grid.Row="4"
                    Grid.Column="1"
                    Text="{Binding ParentId, Mode=OneWay}"/>
+        <TextBlock Grid.Row="5"
+                   Grid.Column="0"
+                   Text="CurrentUserId"/>
+        <TextBox Grid.Row="5"
+                   Grid.Column="1"
+                   Text="{Binding CurrentUserId, Mode=OneWay}"/>
 
         <TabControl Grid.Row="6"
-                    Grid.ColumnSpan="2"
+                    Grid.ColumnSpan="3"
                     Margin="0,10,0,0">
             <TabItem Header="Attributes">
                 <local:AttributesView DataContext="{Binding AttributesVm, Mode=OneWay}"/>
@@ -84,12 +102,22 @@
             <TabItem Header="Files">
                 <local:FilesView DataContext="{Binding FilesVm, Mode=OneWay}"/>
             </TabItem>
+            <TabItem Header="Snapshots">
+                <local:SnapshotsView DataContext="{Binding SnapshotsVm, Mode=OneWay}"/>
+            </TabItem>
             <TabItem Header="Access">
                 <local:AccessView DataContext="{Binding AccessVm, Mode=OneWay}"/>
             </TabItem>
             <TabItem Header="Relations">
                 <local:RelationsView DataContext="{Binding RelationsVm, Mode=OneWay}"/>
             </TabItem>
+            <TabItem Header="People">
+                <local:PeopleView DataContext="{Binding PeopleVm, Mode=OneWay}"/>
+            </TabItem>
+            <TabItem Header="OrgUnits">
+                <local:OrgUnitsView DataContext="{Binding OrgUnitsVm, Mode=OneWay}"/>
+            </TabItem>
+            
         </TabControl>
     </Grid>
 </Window>
