@@ -12,9 +12,11 @@ namespace PilotObjectInfo.ViewModels
     {
         public OrgUnitsViewModel(IEnumerable<IOrganisationUnit> organisationUnits)
         {
-            OrganisationUnits = new ObservableCollection<IOrganisationUnit>(organisationUnits);
+            OrganisationUnits = new ObservableCollection<OrgUnitViewModel>(organisationUnits.Where(x=>x.Id == 0).Select(x=> new OrgUnitViewModel(organisationUnits, x)));
         }
 
-        public ObservableCollection<IOrganisationUnit> OrganisationUnits { get; }
+        public ObservableCollection<OrgUnitViewModel> OrganisationUnits { get; }
+
+
     }
 }

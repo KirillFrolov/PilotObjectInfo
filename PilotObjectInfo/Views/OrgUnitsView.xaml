@@ -7,21 +7,53 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <DataGrid ItemsSource="{Binding OrganisationUnits}"
-                  AutoGenerateColumns="False"
-                  IsReadOnly="True">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Id" 
-                                    Binding="{Binding Id, Mode=OneWay}"/>
-                <DataGridTextColumn Header="Title"
-                                    Binding="{Binding Title, Mode=OneWay}"/>
-                <DataGridTextColumn Header="IsDeleted"
-                                    Binding="{Binding IsDeleted, Mode=OneWay}"/>
-                <DataGridTextColumn Header="IsPosition"
-                                    Binding="{Binding IsPosition, Mode=OneWay}"/>
-                <DataGridTextColumn Header="IsChief"
-                                    Binding="{Binding IsChief, Mode=OneWay}"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <TreeView ItemsSource="{Binding OrganisationUnits}"
+                  BorderThickness="0"
+                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  BorderBrush="Transparent"
+                  Margin="10">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                    <Grid>
+                        <Grid.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Margin" Value="5,0,5,10"/>
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{Binding Id}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding Title}"/>
+                        <TextBlock Grid.Column="2">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{} IsDeleted: {0}">
+                                    <Binding Path="IsDeleted" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                        <TextBlock Grid.Column="3">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{} IsPosition: {0}">
+                                    <Binding Path="IsPosition" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                        <TextBlock Grid.Column="4">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{} IsChief: {0}">
+                                    <Binding Path="IsChief" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </Grid>
+
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
     </Grid>
 </UserControl>

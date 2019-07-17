@@ -87,6 +87,7 @@
     <Compile Include="ViewModels\CreatorViewModel.cs" />
     <Compile Include="ViewModels\FilesViewModel.cs" />
     <Compile Include="ViewModels\OrgUnitsViewModel.cs" />
+    <Compile Include="ViewModels\OrgUnitViewModel.cs" />
     <Compile Include="ViewModels\RelationsViewModel.cs" />
     <Compile Include="ViewModels\SnapshotsViewModel.cs" />
     <Compile Include="ViewModels\SnapshotViewModel.cs" />
