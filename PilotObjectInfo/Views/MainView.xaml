@@ -117,6 +117,12 @@
             <TabItem Header="OrgUnits">
                 <local:OrgUnitsView DataContext="{Binding OrgUnitsVm, Mode=OneWay}"/>
             </TabItem>
+            <TabItem Header="Types">
+                <local:TypesView DataContext="{Binding TypesVm, Mode=OneWay}"/>
+            </TabItem>
+            <TabItem Header="UserStates">
+                <local:UserStatesView DataContext="{Binding UserStatesVm, Mode=OneWay}"/>
+            </TabItem>
             
         </TabControl>
     </Grid>

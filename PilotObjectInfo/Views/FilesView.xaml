@@ -13,6 +13,8 @@
         </Grid.RowDefinitions>
         <DataGrid ItemsSource="{Binding Files}"
                   AutoGenerateColumns="False"
+                  SelectedItem="{Binding SelectedFile}"
+                  SelectedValue="{Binding SelectedFile}"
                   IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" 
@@ -40,12 +42,31 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Button Grid.Row="1"
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right">
+
+            <Button 
+                Command="{Binding AddFilesCmd}"
+                Content="Add Files"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Right"
+                Margin="5"
+                />
+            <Button 
+                Command="{Binding DelFileCmd}"
+                Content="Del File"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Right"
+                Margin="5"
+                />
+            <Button 
                 Command="{Binding DownloadAllCmd}"
                 Content="Download All"
                 VerticalAlignment="Bottom"
                 HorizontalAlignment="Right"
-                Margin="10"
+                Margin="5,5,10,5"
                 />
+        </StackPanel>
     </Grid>
 </UserControl>

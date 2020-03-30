@@ -17,25 +17,28 @@ namespace PilotObjectInfo.ViewModels
         private ITabServiceProvider _tabServiceProvider;
         private RelayCommand _goToCommand;
 
-        public MainViewModel(IDataObject obj, IObjectsRepository objectsRepository, IFileProvider fileProvider, ITabServiceProvider tabServiceProvider)
+        public MainViewModel(IDataObject obj, IObjectsRepository objectsRepository, FileModifier fileModifier, IFileProvider fileProvider, ITabServiceProvider tabServiceProvider)
         {
             _obj = obj;
             _fileProvider = fileProvider;
             _objectsRepository = objectsRepository;
             _tabServiceProvider = tabServiceProvider;
-
-            AttributesVm = new AttributesViewModel(_obj.Attributes);
+            
+            AttributesVm = new AttributesViewModel(_obj);
             TypeVm = new TypeViewModel(_obj.Type);
             CreatorVm = new CreatorViewModel(_obj.Creator);
-            FilesVm = new FilesViewModel(_obj.Files, _fileProvider);
-            SnapshotsVm = new SnapshotsViewModel(_obj.PreviousFileSnapshots, _fileProvider);
+            FilesVm = new FilesViewModel(obj.Id, _obj.Files, _fileProvider, fileModifier);
+            SnapshotsVm = new SnapshotsViewModel(_obj.Id, _obj.PreviousFileSnapshots, _fileProvider);
 
             AccessVm = new AccessViewModel(_obj.Access2);
             RelationsVm = new RelationsViewModel(obj.Relations);
             StateInfoVm = new StateInfoViewModel(obj.ObjectStateInfo);
-            ChildrenVm = new ChildrenViewModel(obj.Children, _objectsRepository, _fileProvider, _tabServiceProvider);
+            ChildrenVm = new ChildrenViewModel(obj.Children, _objectsRepository, _fileProvider, _tabServiceProvider, fileModifier);
             PeopleVm = new PeopleViewModel(_objectsRepository.GetPeople());
             OrgUnitsVm = new OrgUnitsViewModel(_objectsRepository.GetOrganisationUnits());
+            TypesVm = new TypesViewModel(_objectsRepository.GetTypes());
+            UserStatesVm = new UserStatesViewModel( _objectsRepository.GetUserStates());
+
             _objectsRepository.GetOrganisationUnits();
         }
 
@@ -62,7 +65,9 @@ namespace PilotObjectInfo.ViewModels
         public ChildrenViewModel ChildrenVm { get; }
         public PeopleViewModel PeopleVm { get; }
         public OrgUnitsViewModel OrgUnitsVm { get; }
+        public UserStatesViewModel UserStatesVm { get; }
 
+        public TypesViewModel TypesVm { get; }
 
         public RelayCommand GoToCommand
         {

@@ -13,11 +13,11 @@ namespace PilotObjectInfo.ViewModels
         private IFileProvider _fileProvider;
         private FilesViewModel _files;
 
-        public SnapshotViewModel(IFilesSnapshot filesSnapshot, IFileProvider fileProvider)
+        public SnapshotViewModel(Guid objectId,  IFilesSnapshot filesSnapshot, IFileProvider fileProvider)
         {
             _filesSnapshot = filesSnapshot;
             _fileProvider = fileProvider;
-            _files = new FilesViewModel(_filesSnapshot.Files, fileProvider);
+            _files = new FilesViewModel(objectId, _filesSnapshot.Files, fileProvider);
 
         }
 

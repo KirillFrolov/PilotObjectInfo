@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="PilotObjectInfo.Views.TypesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PilotObjectInfo.Views"
+             xmlns:vetools="clr-namespace:Ascon.Pilot.VisualElements.Tools;assembly=Ascon.Pilot.VisualElements"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <vetools:ByteImageConverter x:Key ="ByteImageConverter"/>
+    </UserControl.Resources>
+    <Grid>
+        <DataGrid ItemsSource="{Binding Types}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding SvgIcon, Converter={StaticResource ByteImageConverter}}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Id" 
+                                    Binding="{Binding Id, Mode=OneWay}"/>
+                <DataGridTextColumn Header="Name"
+                                    Binding="{Binding Name, Mode=OneWay}"/>
+                <DataGridTextColumn Header="Title"
+                                    Binding="{Binding Title, Mode=OneWay}"/>
+                <DataGridTextColumn Header="Kind"
+                                    Binding="{Binding Kind, Mode=OneWay}"/>
+                <DataGridTextColumn Header="IsMountable"
+                                    Binding="{Binding IsMountable, Mode=OneWay}"/>
+                <DataGridTextColumn Header="IsDeleted"
+                                    Binding="{Binding IsDeleted, Mode=OneWay}"/>
+                <DataGridTextColumn Header="IsProject"
+                                    Binding="{Binding IsProject, Mode=OneWay}"/>
+                <DataGridTextColumn Header="IsAdmin"
+                                    Binding="{Binding IsService, Mode=OneWay}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

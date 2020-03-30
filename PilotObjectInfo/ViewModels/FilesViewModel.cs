@@ -8,24 +8,39 @@ using System.Threading.Tasks;
 using Ascon.Pilot.SDK;
 using Homebrew.Mvvm.Commands;
 using Homebrew.Mvvm.Models;
+using Microsoft.Win32;
 
 namespace PilotObjectInfo.ViewModels
 {
     class FilesViewModel : ObservableObject
     {
+        private Guid _objectId;
         private ReadOnlyCollection<IFile> _files;
         private IFileProvider _fileProvider;
+        private FileModifier _fileModifier;
         private RelayCommand _downloadCmd;
         private RelayCommand _downloadAllCmd;
+        private RelayCommand _addFilesCmd;
+        private RelayCommand _delFileCmd;
 
-        public FilesViewModel(ReadOnlyCollection<IFile> files, IFileProvider fileProvider)
+        public FilesViewModel(Guid objectId , ReadOnlyCollection<IFile> files, IFileProvider fileProvider, FileModifier fileModifier = null)
         {
+            _objectId = objectId;
             _files = files;
             _fileProvider = fileProvider;
+            _fileModifier = fileModifier;
+            Files = new ObservableCollection<IFile>(_files);
 
         }
 
-        public ReadOnlyCollection<IFile> Files => _files;
+        public ObservableCollection<IFile> Files { get; set; }
+
+        public IFile SelectedFile
+        {
+            get => Get(() => SelectedFile);
+            set => Set(() => SelectedFile, value);
+
+        }
 
         public RelayCommand DownloadCmd
         {
@@ -52,6 +67,55 @@ namespace PilotObjectInfo.ViewModels
                 return _downloadAllCmd;
 
             }
+        }
+
+        public RelayCommand AddFilesCmd
+        {
+            get
+            {
+                if (_addFilesCmd == null)
+                {
+                    _addFilesCmd = new RelayCommand(DoAddFiles, (o) => _fileModifier != null);
+                }
+                return _addFilesCmd;
+
+            }
+        }
+
+        public RelayCommand DelFileCmd
+        {
+            get
+            {
+                if (_delFileCmd == null)
+                {
+                    _delFileCmd = new RelayCommand(DoDelFile, (o) => _fileModifier != null && SelectedFile != null);
+                }
+                return _delFileCmd;
+
+            }
+        }
+
+        private async void DoDelFile(object obj)
+        {
+            var files = await _fileModifier.RemoveFile(_objectId, SelectedFile);
+            Refresh(files);
+        }
+
+        private async void DoAddFiles(object obj)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Multiselect = true;
+            if (dialog.ShowDialog() != true) return;
+            var files = await _fileModifier.AddFiles(_objectId, dialog.FileNames);
+            Refresh(files);
+        }
+
+        private void Refresh(IEnumerable<IFile> files)
+        {
+            if (files == null) return;
+            _files = new ReadOnlyCollection<IFile>(files.ToList());
+            Files.Clear();
+            _files.ToList().ForEach(x => Files.Add(x));
         }
 
         private void DoDownloadAllCmd(object obj)

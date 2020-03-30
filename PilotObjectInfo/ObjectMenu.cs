@@ -14,23 +14,27 @@ namespace PilotObjectInfo
 {
     [Export(typeof(IMenu<StorageContext>))]
     [Export(typeof(IMenu<ObjectsViewContext>))]
-    [Export(typeof(IMenu<TasksViewContext>))]
+    [Export(typeof(IMenu<TasksViewContext2>))]
     //[Export(typeof(IToolbar<ObjectsViewContext>))]
     //[Export(typeof(IToolbar<TasksViewContext>))]
-    public class ObjectMenu : IMenu<ObjectsViewContext>, IMenu<StorageContext>, IMenu<TasksViewContext>//,
+    public class ObjectMenu : IMenu<ObjectsViewContext>, IMenu<StorageContext>, IMenu<TasksViewContext2>//,
        // IToolbar<ObjectsViewContext>, IToolbar<TasksViewContext>
 
     {
         private IObjectsRepository _objectsRepository;
+        private IObjectModifier _objectModifier;
         private IFileProvider _fileProvider;
         private ITabServiceProvider _tabServiceProvider;
+        private FileModifier _fileModifier;
 
         [ImportingConstructor]
-        public ObjectMenu(IObjectsRepository objectsRepository, IFileProvider fileProvider, ITabServiceProvider tabServiceProvider)
+        public ObjectMenu(IObjectsRepository objectsRepository, IFileProvider fileProvider, ITabServiceProvider tabServiceProvider, IObjectModifier objectModifier)
         {
             _objectsRepository = objectsRepository;
+            _objectModifier = objectModifier;
             _fileProvider = fileProvider;
             _tabServiceProvider = tabServiceProvider;
+            _fileModifier = new FileModifier(_objectModifier, _objectsRepository);
         }
 
         public void Build(IMenuBuilder builder, StorageContext context)
@@ -43,40 +47,31 @@ namespace PilotObjectInfo
             AddItem(builder);
         }
 
-        public void Build(IMenuBuilder builder, TasksViewContext context)
+        public void Build(IMenuBuilder builder, TasksViewContext2 context)
         {
             AddItem(builder);
         }
-
-        //public void Build(IToolbarBuilder builder, ObjectsViewContext context)
-        //{
-        //    AddItem(builder);
-        //}
-
-        //public void Build(IToolbarBuilder builder, TasksViewContext context)
-        //{
-        //    AddItem(builder);
-        //}
 
         public void OnMenuItemClick(string name, StorageContext context)
         {
             if (context.SelectedObjects.Count() > 1 || context.SelectedObjects.Count() == 0) return;
             IDataObject obj = context.SelectedObjects.First().DataObject;
-            DialogService.ShowInfo(obj, _objectsRepository, _fileProvider, _tabServiceProvider);
+            DialogService.ShowInfo(obj, _objectsRepository, _fileProvider, _tabServiceProvider, _fileModifier);
         }
 
         public void OnMenuItemClick(string name, ObjectsViewContext context)
         {
             if (context.SelectedObjects.Count() > 1 || context.SelectedObjects.Count() == 0) return;
             IDataObject obj = context.SelectedObjects.First();
-            DialogService.ShowInfo(obj, _objectsRepository, _fileProvider, _tabServiceProvider);
+            DialogService.ShowInfo(obj, _objectsRepository, _fileProvider, _tabServiceProvider, _fileModifier);
         }
 
-        public void OnMenuItemClick(string name, TasksViewContext context)
+
+        public void OnMenuItemClick(string name, TasksViewContext2 context)
         {
             if (context.SelectedTasks.Count() > 1 || context.SelectedTasks.Count() == 0) return;
-            IDataObject obj = context.SelectedTasks.First().ToDataObject();
-            DialogService.ShowInfo(obj, _objectsRepository, _fileProvider, _tabServiceProvider);
+            IDataObject obj = context.SelectedTasks.First();
+            DialogService.ShowInfo(obj, _objectsRepository, _fileProvider, _tabServiceProvider, _fileModifier);
         }
 
         //public void OnToolbarItemClick(string name, ObjectsViewContext context)

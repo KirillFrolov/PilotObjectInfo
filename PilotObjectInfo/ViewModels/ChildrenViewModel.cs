@@ -11,18 +11,20 @@ using System.Threading.Tasks;
 
 namespace PilotObjectInfo.ViewModels
 {
-    class ChildrenViewModel: ObservableObject
+    class ChildrenViewModel : ObservableObject
     {
         private IEnumerable<Guid> _children;
         private IObjectsRepository _objectsRepository;
+        private FileModifier _fileModifier;
         private IFileProvider _fileProvider;
         private ITabServiceProvider _tabServiceProvider;
         private RelayCommand _showInfoCmd;
 
-        public ChildrenViewModel(IEnumerable<Guid> children,IObjectsRepository objectsRepository, IFileProvider fileProvider, ITabServiceProvider tabServiceProvider)
+        public ChildrenViewModel(IEnumerable<Guid> children, IObjectsRepository objectsRepository, IFileProvider fileProvider, ITabServiceProvider tabServiceProvider, FileModifier fileModifier)
         {
             _children = children;
             _objectsRepository = objectsRepository;
+            _fileModifier = fileModifier;
             _fileProvider = fileProvider;
             _tabServiceProvider = tabServiceProvider;
         }
@@ -44,7 +46,7 @@ namespace PilotObjectInfo.ViewModels
         private void DoShowInfo(object obj)
         {
             Guid id = (Guid)obj;
-           DialogService.ShowInfo(id, _objectsRepository, _fileProvider, _tabServiceProvider);
+            DialogService.ShowInfo(id, _objectsRepository, _fileProvider, _tabServiceProvider, _fileModifier);
         }
     }
 }

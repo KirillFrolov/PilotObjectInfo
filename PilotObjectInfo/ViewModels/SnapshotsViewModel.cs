@@ -10,9 +10,9 @@ namespace PilotObjectInfo.ViewModels
 {
     class SnapshotsViewModel
     {
-        public SnapshotsViewModel(IEnumerable<IFilesSnapshot> filesSnapshot, IFileProvider fileProvider)
+        public SnapshotsViewModel(Guid objectId,  IEnumerable<IFilesSnapshot> filesSnapshot, IFileProvider fileProvider)
         {
-            Snapshots = new ObservableCollection<SnapshotViewModel>(filesSnapshot.Select(x => new SnapshotViewModel(x, fileProvider)));
+            Snapshots = new ObservableCollection<SnapshotViewModel>(filesSnapshot.Select(x => new SnapshotViewModel(objectId, x, fileProvider)));
         }
 
         public ObservableCollection<SnapshotViewModel> Snapshots { get; }
