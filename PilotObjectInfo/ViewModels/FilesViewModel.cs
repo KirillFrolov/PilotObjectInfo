@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Ascon.Pilot.SDK;
 using Homebrew.Mvvm.Commands;
 using Homebrew.Mvvm.Models;
@@ -23,7 +24,7 @@ namespace PilotObjectInfo.ViewModels
         private RelayCommand _addFilesCmd;
         private RelayCommand _delFileCmd;
 
-        public FilesViewModel(Guid objectId , ReadOnlyCollection<IFile> files, IFileProvider fileProvider, FileModifier fileModifier = null)
+        public FilesViewModel(Guid objectId, ReadOnlyCollection<IFile> files, IFileProvider fileProvider, FileModifier fileModifier = null)
         {
             _objectId = objectId;
             _files = files;
@@ -38,10 +39,23 @@ namespace PilotObjectInfo.ViewModels
         public IFile SelectedFile
         {
             get => Get(() => SelectedFile);
-            set => Set(() => SelectedFile, value);
+            set => Set(() => SelectedFile, value, () =>
+            {
+                if (value != null)
+                    SignnaturesInfo = new SignnaturesInfoViewModel(value);
+                else SignnaturesInfo = null;
+
+            });
 
         }
 
+
+        public SignnaturesInfoViewModel SignnaturesInfo
+        {
+            get => Get(() => SignnaturesInfo);
+            set => Set(() => SignnaturesInfo, value);
+
+        }
         public RelayCommand DownloadCmd
         {
             get
@@ -97,8 +111,11 @@ namespace PilotObjectInfo.ViewModels
 
         private async void DoDelFile(object obj)
         {
-            var files = await _fileModifier.RemoveFile(_objectId, SelectedFile);
-            Refresh(files);
+            if (MessageBox.Show($"Do you really want to delete a file: [{SelectedFile.Name}]?", "Delete file", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                var files = await _fileModifier.RemoveFile(_objectId, SelectedFile);
+                Refresh(files);
+            }
         }
 
         private async void DoAddFiles(object obj)

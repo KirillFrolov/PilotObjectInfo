@@ -31,7 +31,7 @@ namespace PilotObjectInfo.ViewModels
             SnapshotsVm = new SnapshotsViewModel(_obj.Id, _obj.PreviousFileSnapshots, _fileProvider);
 
             AccessVm = new AccessViewModel(_obj.Access2);
-            RelationsVm = new RelationsViewModel(obj.Relations);
+            RelationsVm = new RelationsViewModel(obj.Relations, _objectsRepository, _fileProvider, _tabServiceProvider, fileModifier);
             StateInfoVm = new StateInfoViewModel(obj.ObjectStateInfo);
             ChildrenVm = new ChildrenViewModel(obj.Children, _objectsRepository, _fileProvider, _tabServiceProvider, fileModifier);
             PeopleVm = new PeopleViewModel(_objectsRepository.GetPeople());

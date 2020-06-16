@@ -21,6 +21,19 @@
                                     Binding="{Binding Type, Mode=OneWay}"/>
                 <DataGridTextColumn Header="VersionId"
                                     Binding="{Binding VersionId, Mode=OneWay}"/>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Command="{Binding Path= DataContext.ShowInfoCmd,
+                                RelativeSource= {RelativeSource Mode=FindAncestor, 
+                                AncestorType={x:Type UserControl}}}"
+                                    CommandParameter="{Binding TargetId}" 
+                                    Content="Show info"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
