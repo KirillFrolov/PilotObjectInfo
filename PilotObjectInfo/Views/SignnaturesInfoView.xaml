@@ -24,7 +24,8 @@
         <DataGrid Grid.Row="1"
             ItemsSource="{Binding Signatures}"
                   AutoGenerateColumns="False"
-                  IsReadOnly="True">
+                  IsReadOnly="True"
+                   ClipboardCopyMode="IncludeHeader">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" 
                                     Binding="{Binding Id, Mode=OneWay}"/>

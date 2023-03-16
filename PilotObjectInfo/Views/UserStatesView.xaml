@@ -14,12 +14,14 @@
     <Grid>
         <DataGrid ItemsSource="{Binding States}"
                   AutoGenerateColumns="False"
-                  IsReadOnly="True">
+                  IsReadOnly="True"
+                   ClipboardCopyMode="IncludeHeader">
             <DataGrid.Columns>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Image Source="{Binding Icon, Converter={StaticResource ByteImageConverter}}"/>
+                            <Image Source="{Binding Icon, Converter={StaticResource ByteImageConverter}}"
+                                   Width="16" Height="16" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

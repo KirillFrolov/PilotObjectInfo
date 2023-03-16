@@ -42,13 +42,33 @@ namespace PilotObjectInfo.ViewModels
             set => Set(() => SelectedFile, value, () =>
             {
                 if (value != null)
+                {
                     SignnaturesInfo = new SignnaturesInfoViewModel(value);
+                    FileContent = GetFileContent(value);
+                }
                 else SignnaturesInfo = null;
 
             });
 
         }
 
+        private string GetFileContent(IFile file)
+        {
+            using (var stream = _fileProvider.OpenRead(file))
+            {
+                var memoryStream = new MemoryStream();
+                stream.CopyTo(memoryStream);
+                byte[] byteArray = memoryStream.ToArray();
+                var str = Encoding.UTF8.GetString(byteArray);
+                return str;
+            }
+        }
+
+        public string FileContent
+        {
+            get => Get(() => FileContent);
+            set => Set(() => FileContent, value);
+        }
 
         public SignnaturesInfoViewModel SignnaturesInfo
         {
@@ -102,7 +122,7 @@ namespace PilotObjectInfo.ViewModels
             {
                 if (_delFileCmd == null)
                 {
-                    _delFileCmd = new RelayCommand(DoDelFile, (o) => _fileModifier != null && SelectedFile != null);
+                    _delFileCmd = new RelayCommand(DoDelFile, (o) => _fileModifier != null );
                 }
                 return _delFileCmd;
 
@@ -111,9 +131,11 @@ namespace PilotObjectInfo.ViewModels
 
         private async void DoDelFile(object obj)
         {
-            if (MessageBox.Show($"Do you really want to delete a file: [{SelectedFile.Name}]?", "Delete file", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            var file = obj as IFile;
+            if (file == null) return;
+            if (MessageBox.Show($"Do you really want to delete a file: [{file.Name}]?", "Delete file", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                var files = await _fileModifier.RemoveFile(_objectId, SelectedFile);
+                var files = await _fileModifier.RemoveFile(_objectId, file);
                 Refresh(files);
             }
         }

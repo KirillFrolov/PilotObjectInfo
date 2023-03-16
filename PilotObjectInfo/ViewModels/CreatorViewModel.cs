@@ -22,7 +22,7 @@ namespace PilotObjectInfo.ViewModels
 		public string DisplayName => _creator?.DisplayName;
 		public bool? IsAdmin => _creator?.IsAdmin;
 		public string Login => _creator?.Login;
-		public int? MainPosition => _creator?.MainPosition.Position;
+		public int? MainPosition => _creator?.MainPosition?.Position;
 		public string Sid => _creator?.Sid;
 
 

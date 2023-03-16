@@ -15,6 +15,8 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*"/>
@@ -49,31 +51,40 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Command="{Binding Path= DataContext.DelFileCmd,  RelativeSource= {RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                                    CommandParameter="{Binding .}" 
+                                    Content="Del File"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+
         <GridSplitter Grid.Row="1"
                       Height = "3" 
                       HorizontalAlignment= "Stretch" 
                       VerticalAlignment= "Center" 
                       ShowsPreview= "False"/>
-        <!--<TextBlock Grid.Row="2" 
-                   Grid.Column="2"
-                   Margin="5,20,5,5">
-            <TextBlock.Resources>
-                <sys:String x:Key="fixedValue">Signatures info for</sys:String>
-            </TextBlock.Resources>
-            <TextBlock.Text>
-                <MultiBinding StringFormat="{}{0} {1}">
-                    <Binding Source="{StaticResource fixedValue}"  />
-                    <Binding Path="SelectedFile.Name" />
-                </MultiBinding>
-            </TextBlock.Text>
-        </TextBlock>-->
-        
+        <TextBox Grid.Row="2"
+                 Text="{Binding FileContent, Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged}"
+                 TextWrapping="Wrap"
+                 AcceptsReturn="True"
+                 IsReadOnly="True"
+                   />
 
-        <local:SignnaturesInfoView Grid.Row="2"  DataContext="{Binding SignnaturesInfo}"/>
+        <GridSplitter Grid.Row="3"
+                      Height = "3" 
+                      HorizontalAlignment= "Stretch" 
+                      VerticalAlignment= "Center" 
+                      ShowsPreview= "False"/>
+        <local:SignnaturesInfoView Grid.Row="4"  DataContext="{Binding SignnaturesInfo}"/>
         
-        <StackPanel Grid.Row="3"
+        <StackPanel Grid.Row="5"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right">
 
@@ -84,13 +95,13 @@
                 HorizontalAlignment="Right"
                 Margin="5"
                 />
-            <Button 
+            <!--<Button 
                 Command="{Binding DelFileCmd}"
                 Content="Del File"
                 VerticalAlignment="Bottom"
                 HorizontalAlignment="Right"
                 Margin="5"
-                />
+                />-->
             <Button 
                 Command="{Binding DownloadAllCmd}"
                 Content="Download All"

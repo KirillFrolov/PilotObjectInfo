@@ -9,7 +9,8 @@
     <Grid>
         <DataGrid ItemsSource="{Binding Access}"
                   AutoGenerateColumns="False"
-                  IsReadOnly="True">
+                  IsReadOnly="True"
+                   ClipboardCopyMode="IncludeHeader">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="RecordOwner" 
                                     Binding="{Binding RecordOwner, Mode=OneWay}"/>

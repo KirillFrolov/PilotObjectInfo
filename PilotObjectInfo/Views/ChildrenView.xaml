@@ -9,6 +9,7 @@
     <Grid>
         <DataGrid ItemsSource="{Binding Children}"
                   AutoGenerateColumns="False"
+                   ClipboardCopyMode="IncludeHeader"
                   IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" 
