@@ -7,46 +7,53 @@ namespace PilotObjectInfo.ViewModels
 {
     class MainViewModel : ReactiveObject
     {
-        private IDataObject _obj;
         private IFileProvider _fileProvider;
-        private IObjectsRepository _objectsRepository;
-        private ITabServiceProvider _tabServiceProvider;
+        private readonly IObjectsRepository _objectsRepository;
+        private readonly ITabServiceProvider _tabServiceProvider;
         private ReactiveCommand<Unit, Unit> _goToCommand;
 
-        public MainViewModel(IDataObject obj, IObjectsRepository objectsRepository, FileModifier fileModifier, IFileProvider fileProvider, ITabServiceProvider tabServiceProvider)
+        public MainViewModel(IDataObject obj, IObjectsRepository objectsRepository, FileModifier fileModifier,
+            IFileProvider fileProvider, ITabServiceProvider tabServiceProvider,
+            AttributeModifier attributeModifier, DialogService dialogService)
         {
-            _obj = obj;
             _fileProvider = fileProvider;
             _objectsRepository = objectsRepository;
             _tabServiceProvider = tabServiceProvider;
-            
-            AttributesVm = new AttributesViewModel(_obj);
-            TypeVm = new TypeViewModel(_obj.Type);
-            CreatorVm = new CreatorViewModel(_obj.Creator);
-            FilesVm = new FilesViewModel(obj.Id, _obj.Files, _fileProvider, fileModifier);
-            SnapshotsVm = new SnapshotsViewModel(_obj.Id, _obj.PreviousFileSnapshots, _fileProvider);
 
-            AccessVm = new AccessViewModel(_obj.Access2);
-            RelationsVm = new RelationsViewModel(obj.Relations, _objectsRepository, _fileProvider, _tabServiceProvider, fileModifier);
+            AttributesVm = new AttributesViewModel(obj, attributeModifier);
+            TypeVm = new TypeViewModel(obj.Type);
+            CreatorVm = new CreatorViewModel(obj.Creator);
+            FilesVm = new FilesViewModel(obj.Id, obj.Files, _fileProvider, fileModifier);
+            SnapshotsVm = new SnapshotsViewModel(obj.Id, obj.PreviousFileSnapshots, _fileProvider);
+
+            AccessVm = new AccessViewModel(obj.Access2);
+            RelationsVm = new RelationsViewModel(obj.Relations, _objectsRepository, _fileProvider, _tabServiceProvider,
+                fileModifier, dialogService);
             StateInfoVm = new StateInfoViewModel(obj.ObjectStateInfo);
-            ChildrenVm = new ChildrenViewModel(obj.Children, _objectsRepository, _fileProvider, _tabServiceProvider, fileModifier);
+            ChildrenVm = new ChildrenViewModel(obj.Children, dialogService);
             PeopleVm = new PeopleViewModel(_objectsRepository.GetPeople());
             OrgUnitsVm = new OrgUnitsViewModel(_objectsRepository.GetOrganisationUnits());
             TypesVm = new TypesViewModel(_objectsRepository.GetTypes());
-            UserStatesVm = new UserStatesViewModel( _objectsRepository.GetUserStates());
+            UserStatesVm = new UserStatesViewModel(_objectsRepository.GetUserStates());
 
             _objectsRepository.GetOrganisationUnits();
+            Id = obj.Id;
+            DisplayName = obj.DisplayName;
+            Created = obj.Created;
+            IsSecret = obj.IsSecret;
+            ParentId = obj.ParentId;
         }
 
-        public Guid Id => _obj.Id;
+        public Guid Id { get; }
 
-        public string DisplayName => _obj.DisplayName;
 
-        public DateTime Created => _obj.Created;
+        public string DisplayName { get; }
 
-        public bool IsSecret => _obj.IsSecret;
+        public DateTime Created { get; }
 
-        public Guid ParentId => _obj.ParentId;
+        public bool IsSecret { get; }
+
+        public Guid ParentId { get; }
 
         public int CurrentUserId => _objectsRepository.GetCurrentPerson().Id;
 

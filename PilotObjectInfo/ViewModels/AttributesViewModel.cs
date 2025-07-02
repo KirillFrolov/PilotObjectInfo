@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive;
+using System.Threading.Tasks;
 using Ascon.Pilot.SDK;
 using ReactiveUI;
 
@@ -8,31 +11,40 @@ namespace PilotObjectInfo.ViewModels
 {
     class AttributesViewModel : ReactiveObject
     {
-        private IDictionary<string, object> _attributes;
+        private readonly AttributeModifier _attributeModifier;
 
-        public AttributesViewModel(IDictionary<string, object> attributes)
+        private ReactiveCommand<KeyValuePair<string, string>, Unit> _deleteAttributeCmd;
+        private readonly Guid _id;
+        private readonly IType _type;
+
+
+
+        public AttributesViewModel(IDataObject obj, AttributeModifier attributeModifier)
         {
-            _attributes = attributes;
-            Attributes = _attributes.Select(x => new { x.Key, Value = x.Value?.ToString() }).ToDictionary(x => x.Key, y => y.Value);
+            _id = obj.Id;
+            _type = obj.Type;
+            _attributeModifier = attributeModifier;
+            Attributes = new ObservableCollection<KeyValuePair<string, string>>();
+            InitAttributes(obj.Attributes);
         }
 
-        public AttributesViewModel(IDataObject obj)
+        private void InitAttributes(IDictionary<string, object> attributes)
         {
-            Attributes = new Dictionary<string, string>();
-
-            foreach (var attr in obj.Attributes)
+            Attributes.Clear();
+            foreach (var attr in attributes)
             {
-                var attrType = obj.Type.Attributes.FirstOrDefault(x => x.Name.Equals(attr.Key));
+                var attrType = _type.Attributes.FirstOrDefault(x => x.Name.Equals(attr.Key));
                 if (attrType == null)
                 {
-                    Attributes.Add(attr.Key, attr.Value?.ToString());
+                    Attributes.Add(new KeyValuePair<string, string>(attr.Key, attr.Value?.ToString()));
                     continue;
                 }
+
                 switch (attrType.Type)
                 {
                     case AttributeType.Array:
                     case AttributeType.OrgUnit:
-                        Attributes.Add(attr.Key, (ArrayToString<int>(attr.Value)));
+                        Attributes.Add(new KeyValuePair<string, string>(attr.Key, (ArrayToString<int>(attr.Value))));
                         break;
                     case AttributeType.Integer:
                     case AttributeType.Double:
@@ -42,7 +54,7 @@ namespace PilotObjectInfo.ViewModels
                     case AttributeType.Numerator:
                     case AttributeType.UserState:
                     default:
-                        Attributes.Add(attr.Key, attr.Value?.ToString());
+                        Attributes.Add(new KeyValuePair<string, string>(attr.Key, attr.Value?.ToString()));
                         break;
                 }
             }
@@ -54,7 +66,30 @@ namespace PilotObjectInfo.ViewModels
             return $"[{String.Join(",", arr)}]";
         }
 
-        public Dictionary<string, string> Attributes { get; }
+        public ObservableCollection<KeyValuePair<string, string>> Attributes { get; }
 
+
+        public ReactiveCommand<KeyValuePair<string, string>, Unit> DeleteAttributeCmd
+        {
+            get
+            {
+                return _deleteAttributeCmd ?? (_deleteAttributeCmd =
+                    ReactiveCommand.CreateFromTask<KeyValuePair<string, string>, Unit>(async o =>
+                    {
+                        await DeleteAttribute(o);
+                        return Unit.Default;
+                    }));
+            }
+        }
+
+        private async Task DeleteAttribute(KeyValuePair<string, string> attribute)
+        {
+            if (string.IsNullOrEmpty(attribute.Key)) return;
+            if (_attributeModifier != null)
+            {
+                var newAttributes = await _attributeModifier.DeleteAttributeAsync(_id, attribute.Key);
+                InitAttributes(newAttributes);
+            }
+        }
     }
 }

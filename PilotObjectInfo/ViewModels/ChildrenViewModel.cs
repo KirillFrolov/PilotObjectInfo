@@ -1,5 +1,4 @@
 ﻿using Ascon.Pilot.SDK;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,20 +11,15 @@ namespace PilotObjectInfo.ViewModels
 {
     class ChildrenViewModel : ReactiveObject
     {
-        private IEnumerable<Guid> _children;
-        private IObjectsRepository _objectsRepository;
-        private FileModifier _fileModifier;
-        private IFileProvider _fileProvider;
-        private ITabServiceProvider _tabServiceProvider;
+        private readonly IEnumerable<Guid> _children;
+        private readonly DialogService _dialogService;
         private ReactiveCommand<Guid, Unit> _showInfoCmd;
 
-        public ChildrenViewModel(IEnumerable<Guid> children, IObjectsRepository objectsRepository, IFileProvider fileProvider, ITabServiceProvider tabServiceProvider, FileModifier fileModifier)
+        public ChildrenViewModel(IEnumerable<Guid> children, 
+            DialogService dialogService)
         {
             _children = children;
-            _objectsRepository = objectsRepository;
-            _fileModifier = fileModifier;
-            _fileProvider = fileProvider;
-            _tabServiceProvider = tabServiceProvider;
+            _dialogService = dialogService;
         }
 
         public IEnumerable<Guid> Children => _children;
@@ -35,22 +29,17 @@ namespace PilotObjectInfo.ViewModels
         {
             get
             {
-                if (_showInfoCmd == null)
+                return _showInfoCmd ?? (_showInfoCmd = ReactiveCommand.CreateFromTask<Guid, Unit>(async o =>
                 {
-                    _showInfoCmd = ReactiveCommand.Create<Guid, Unit>(o =>
-                    {
-                        DoShowInfo(o);
-                        return Unit.Default;
-                    });
-                }
-                return _showInfoCmd;
+                    await DoShowInfo(o);
+                    return Unit.Default;
+                }));
             }
         }
 
-        private void DoShowInfo(Guid obj)
+        private async Task DoShowInfo(Guid id)
         {
-            var id = obj;
-            DialogService.ShowInfo(id, _objectsRepository, _fileProvider, _tabServiceProvider, _fileModifier);
+            await _dialogService.ShowInfoAsync(id);
         }
     }
 }

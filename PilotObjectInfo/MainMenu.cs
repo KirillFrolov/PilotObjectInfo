@@ -17,6 +17,8 @@ namespace PilotObjectInfo
         private ITabServiceProvider _tabServiceProvider;
         private IObjectModifier _objectModifier;
         private FileModifier _fileModifier;
+        private readonly AttributeModifier _attributeModifier;
+        private readonly DialogService _dialogService;
         private const string SHOW_SUB_MENU = "ShowObjectInfo";
         private const string GO_SUB_MENU = "GoToObject";
         private const string GUID_PATTERN = @"([0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12})";
@@ -29,6 +31,8 @@ namespace PilotObjectInfo
             _tabServiceProvider = tabServiceProvider;
             _objectModifier = objectModifier;
             _fileModifier = new FileModifier(_objectModifier, _objectsRepository);
+            _attributeModifier = new AttributeModifier(_objectModifier, _objectsRepository);
+            _dialogService = new DialogService(_objectsRepository, _fileProvider, _tabServiceProvider, _fileModifier, _attributeModifier);
 
         }
 
@@ -39,7 +43,7 @@ namespace PilotObjectInfo
             item.WithSubmenu().AddItem(GO_SUB_MENU, 0).WithHeader("Go");
         }
 
-        public void OnMenuItemClick(string name, MainViewContext context)
+        public async void OnMenuItemClick(string name, MainViewContext context)
         {
             if (name != SHOW_SUB_MENU && name != GO_SUB_MENU) return;
             
@@ -51,7 +55,7 @@ namespace PilotObjectInfo
             //var obj = (await _objectsRepository.GetObjectsAsync(new Guid[] { id }, o => o, System.Threading.CancellationToken.None)).FirstOrDefault();
             //if (obj == null) return;
             if (name == SHOW_SUB_MENU)
-                DialogService.ShowInfo(id, _objectsRepository, _fileProvider, _tabServiceProvider, _fileModifier);
+                await _dialogService.ShowInfoAsync(id);
             if (name == GO_SUB_MENU)
                 _tabServiceProvider.ShowElement(id);
 

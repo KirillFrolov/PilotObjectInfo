@@ -35,11 +35,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ascon.Pilot.SDK, Version=20.7.0.33191, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ascon.Pilot.SDK.20.7.0\lib\net40-Client\Ascon.Pilot.SDK.dll</HintPath>
+    <Reference Include="Ascon.Pilot.SDK, Version=25.9.0.55929, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ascon.Pilot.SDK.25.9.0\lib\net472\Ascon.Pilot.SDK.dll</HintPath>
     </Reference>
-    <Reference Include="Ascon.Pilot.Theme, Version=20.7.0.33191, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ascon.Pilot.SDK.20.7.0\lib\net40-Client\Ascon.Pilot.Theme.dll</HintPath>
+    <Reference Include="Ascon.Pilot.Theme, Version=25.9.0.55929, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ascon.Pilot.SDK.25.9.0\lib\net472\Ascon.Pilot.Theme.dll</HintPath>
     </Reference>
     <Reference Include="Ascon.Pilot.VisualElements">
       <HintPath>C:\Program Files\ASCON\Pilot-ICE Enterprise\Ascon.Pilot.VisualElements.dll</HintPath>
@@ -117,6 +117,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttributeModifier.cs" />
     <Compile Include="Behaviors\DataGridSelectedItemsBehavior.cs" />
     <Compile Include="DialogService.cs" />
     <Compile Include="Extensions\ObjectsRepositoryEx.cs" />

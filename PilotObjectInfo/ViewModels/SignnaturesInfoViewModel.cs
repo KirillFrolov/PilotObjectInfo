@@ -9,10 +9,10 @@ namespace PilotObjectInfo.ViewModels
         public SignnaturesInfoViewModel(IFile file)
         {
             File = file;
-            Signatures = new ObservableCollection<ISignature>(file.Signatures);
+            Signatures = new ObservableCollection<ISignatureRequest>(file.SignatureRequests);
         }
 
         public IFile File { get; set; }
-        public ObservableCollection<ISignature> Signatures { get; set; }
+        public ObservableCollection<ISignatureRequest> Signatures { get; set; }
     }
 }
