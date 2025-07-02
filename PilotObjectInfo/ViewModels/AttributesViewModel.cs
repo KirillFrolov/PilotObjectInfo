@@ -1,14 +1,12 @@
-﻿using Homebrew.Mvvm.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Ascon.Pilot.SDK;
+using ReactiveUI;
 
 namespace PilotObjectInfo.ViewModels
 {
-    class AttributesViewModel : ObservableObject
+    class AttributesViewModel : ReactiveObject
     {
         private IDictionary<string, object> _attributes;
 

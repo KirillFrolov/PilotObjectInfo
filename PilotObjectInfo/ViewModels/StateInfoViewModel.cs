@@ -1,14 +1,10 @@
 ﻿using Ascon.Pilot.SDK;
-using Homebrew.Mvvm.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ReactiveUI;
 
 namespace PilotObjectInfo.ViewModels
 {
-    class StateInfoViewModel : ObservableObject
+    class StateInfoViewModel : ReactiveObject
     {
         private IStateInfo _stateInfo;
 

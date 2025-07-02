@@ -1,56 +1,49 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reactive;
 using Ascon.Pilot.SDK;
-using Homebrew.Mvvm.Commands;
-using Homebrew.Mvvm.Models;
+using ReactiveUI;
 
 namespace PilotObjectInfo.ViewModels
 {
-	class RelationsViewModel : ObservableObject
+    class RelationsViewModel : ReactiveObject
     {
-		private ReadOnlyCollection<IRelation> _relations;
-        private IObjectsRepository _objectsRepository;
-        private IFileProvider _fileProvider;
-        private ITabServiceProvider _tabServiceProvider;
-        private FileModifier _fileModifier;
-        private RelayCommand _showInfoCmd;
+        private readonly ReadOnlyCollection<IRelation> _relations;
+        private readonly IObjectsRepository _objectsRepository;
+        private readonly IFileProvider _fileProvider;
+        private readonly ITabServiceProvider _tabServiceProvider;
+        private readonly FileModifier _fileModifier;
+        private ReactiveCommand<Guid, Unit> _showInfoCmd;
 
         public RelationsViewModel(ReadOnlyCollection<IRelation> relations,
-            IObjectsRepository objectsRepository, 
+            IObjectsRepository objectsRepository,
             IFileProvider fileProvider,
             ITabServiceProvider tabServiceProvider,
             FileModifier fileModifier)
-		{
-			_relations = relations;
+        {
+            _relations = relations;
             _objectsRepository = objectsRepository;
             _fileProvider = fileProvider;
             _tabServiceProvider = tabServiceProvider;
             _fileModifier = fileModifier;
-
-
         }
 
-		public ReadOnlyCollection<IRelation> Relations => _relations;
+        public ReadOnlyCollection<IRelation> Relations => _relations;
 
-        public RelayCommand ShowInfoCmd
+        public ReactiveCommand<Guid, Unit> ShowInfoCmd
         {
             get
             {
-                if (_showInfoCmd == null)
+                return _showInfoCmd ?? (_showInfoCmd = ReactiveCommand.Create<Guid, Unit>(id =>
                 {
-                    _showInfoCmd = new RelayCommand(DoShowInfo);
-                }
-                return _showInfoCmd;
+                    DoShowInfo(id);
+                    return Unit.Default;
+                }));
             }
         }
 
-        private void DoShowInfo(object obj)
+        private void DoShowInfo(Guid id)
         {
-            Guid id = (Guid)obj;
             DialogService.ShowInfo(id, _objectsRepository, _fileProvider, _tabServiceProvider, _fileModifier);
         }
     }

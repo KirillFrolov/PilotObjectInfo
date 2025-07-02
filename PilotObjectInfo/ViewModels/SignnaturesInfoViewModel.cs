@@ -1,15 +1,10 @@
 ﻿using Ascon.Pilot.SDK;
-using Homebrew.Mvvm.Models;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ReactiveUI;
 
 namespace PilotObjectInfo.ViewModels
 {
-    class SignnaturesInfoViewModel: ObservableObject
+    class SignnaturesInfoViewModel: ReactiveObject
     {
         public SignnaturesInfoViewModel(IFile file)
         {

@@ -3,53 +3,59 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Ascon.Pilot.SDK;
-using Homebrew.Mvvm.Commands;
-using Homebrew.Mvvm.Models;
 using Microsoft.Win32;
+using ReactiveUI;
 
 namespace PilotObjectInfo.ViewModels
 {
-    class FilesViewModel : ObservableObject
+    class FilesViewModel : ReactiveObject
     {
         private Guid _objectId;
         private ReadOnlyCollection<IFile> _files;
         private IFileProvider _fileProvider;
         private FileModifier _fileModifier;
-        private RelayCommand _downloadCmd;
-        private RelayCommand _downloadAllCmd;
-        private RelayCommand _addFilesCmd;
-        private RelayCommand _delFileCmd;
+        private ReactiveCommand<IFile, Unit> _downloadCmd;
+        private ReactiveCommand<Unit, Unit> _downloadAllCmd;
+        private ReactiveCommand<Unit, Unit> _addFilesCmd;
+        private ReactiveCommand<IFile, Unit> _delFileCmd;
 
-        public FilesViewModel(Guid objectId, ReadOnlyCollection<IFile> files, IFileProvider fileProvider, FileModifier fileModifier = null)
+        public FilesViewModel(Guid objectId, ReadOnlyCollection<IFile> files, IFileProvider fileProvider,
+            FileModifier fileModifier = null)
         {
             _objectId = objectId;
             _files = files;
             _fileProvider = fileProvider;
             _fileModifier = fileModifier;
             Files = new ObservableCollection<IFile>(_files);
-
         }
 
         public ObservableCollection<IFile> Files { get; set; }
 
+        private IFile _selectedFile;
+
         public IFile SelectedFile
         {
-            get => Get(() => SelectedFile);
-            set => Set(() => SelectedFile, value, () =>
+            get => _selectedFile;
+            set
             {
-                if (value != null)
+                this.RaiseAndSetIfChanged(ref _selectedFile, value);
+
+                if (_selectedFile != null)
                 {
-                    SignnaturesInfo = new SignnaturesInfoViewModel(value);
-                    FileContent = GetFileContent(value);
+                    SignnaturesInfo = new SignnaturesInfoViewModel(_selectedFile);
+                    FileContent = GetFileContent(_selectedFile);
                 }
-                else SignnaturesInfo = null;
-
-            });
-
+                else
+                {
+                    SignnaturesInfo = null;
+                }
+            }
         }
 
         private string GetFileContent(IFile file)
@@ -64,83 +70,83 @@ namespace PilotObjectInfo.ViewModels
             }
         }
 
+        private string _fileContent;
+
         public string FileContent
         {
-            get => Get(() => FileContent);
-            set => Set(() => FileContent, value);
+            get => _fileContent;
+            set => this.RaiseAndSetIfChanged(ref _fileContent, value);
         }
+
+        private SignnaturesInfoViewModel _signnaturesInfo;
 
         public SignnaturesInfoViewModel SignnaturesInfo
         {
-            get => Get(() => SignnaturesInfo);
-            set => Set(() => SignnaturesInfo, value);
-
+            get => _signnaturesInfo;
+            set => this.RaiseAndSetIfChanged(ref _signnaturesInfo, value);
         }
-        public RelayCommand DownloadCmd
+
+        public ReactiveCommand<IFile, Unit> DownloadCmd
         {
             get
             {
-                if (_downloadCmd == null)
+                return _downloadCmd ?? (_downloadCmd = ReactiveCommand.Create<IFile, Unit>((f) =>
                 {
-                    _downloadCmd = new RelayCommand(DoDownLoad);
-                }
-                return _downloadCmd;
-
+                    DoDownLoad(f);
+                    return Unit.Default;
+                }));
             }
         }
 
 
-        public RelayCommand DownloadAllCmd
+        public ReactiveCommand<Unit, Unit> DownloadAllCmd
         {
             get
             {
-                if (_downloadAllCmd == null)
+                return _downloadAllCmd ?? (_downloadAllCmd = ReactiveCommand.Create<Unit, Unit>((_) =>
                 {
-                    _downloadAllCmd = new RelayCommand(DoDownloadAllCmd, (o) => _files.Count() > 0);
-                }
-                return _downloadAllCmd;
-
+                    DoDownloadAllCmd();
+                    return Unit.Default;
+                }, this.WhenAnyValue(vm => vm.Files.Count).Select(count => count > 0)));
             }
         }
 
-        public RelayCommand AddFilesCmd
+        public ReactiveCommand<Unit, Unit> AddFilesCmd
         {
             get
             {
-                if (_addFilesCmd == null)
+                return _addFilesCmd ?? (_addFilesCmd = ReactiveCommand.CreateFromTask(async _ =>
                 {
-                    _addFilesCmd = new RelayCommand(DoAddFiles, (o) => _fileModifier != null);
-                }
-                return _addFilesCmd;
-
+                    await DoAddFiles();
+                    return Unit.Default;
+                }, this.WhenAnyValue(vm => vm._fileModifier).Select(modifier => modifier != null)));
             }
         }
 
-        public RelayCommand DelFileCmd
+        public ReactiveCommand<IFile, Unit> DelFileCmd
         {
             get
             {
-                if (_delFileCmd == null)
+                return _delFileCmd ?? (_delFileCmd = ReactiveCommand.CreateFromTask<IFile, Unit>(async file =>
                 {
-                    _delFileCmd = new RelayCommand(DoDelFile, (o) => _fileModifier != null );
-                }
-                return _delFileCmd;
-
+                    await DoDelFile(file);
+                    return Unit.Default;
+                }, this.WhenAnyValue(vm => vm._fileModifier).Select(modifier => modifier != null)));
             }
         }
 
-        private async void DoDelFile(object obj)
+        private async Task DoDelFile(IFile file)
         {
-            var file = obj as IFile;
             if (file == null) return;
-            if (MessageBox.Show($"Do you really want to delete a file: [{file.Name}]?", "Delete file", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            if (MessageBox.Show($"Do you really want to delete a file: [{file.Name}]?", "Delete file",
+                    MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 var files = await _fileModifier.RemoveFile(_objectId, file);
                 Refresh(files);
             }
         }
 
-        private async void DoAddFiles(object obj)
+        private async Task DoAddFiles()
         {
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Multiselect = true;
@@ -157,7 +163,7 @@ namespace PilotObjectInfo.ViewModels
             _files.ToList().ForEach(x => Files.Add(x));
         }
 
-        private void DoDownloadAllCmd(object obj)
+        private void DoDownloadAllCmd()
         {
             using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
             {
@@ -170,25 +176,26 @@ namespace PilotObjectInfo.ViewModels
                     {
                         try
                         {
-                            using (FileStream output = new FileStream(Path.Combine(dialog.SelectedPath, file.Name), FileMode.Create))
+                            using (FileStream output = new FileStream(Path.Combine(dialog.SelectedPath, file.Name),
+                                       FileMode.Create))
                             {
                                 stream.CopyTo(output);
                             }
                         }
                         catch (Exception ex)
                         {
-                            System.Windows.MessageBox.Show(ex.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                            System.Windows.MessageBox.Show(ex.Message, "Error", System.Windows.MessageBoxButton.OK,
+                                System.Windows.MessageBoxImage.Error);
                         }
                     }
                 }
             }
         }
 
-        private void DoDownLoad(object obj)
+        private void DoDownLoad(IFile file)
         {
-            var file = obj as IFile;
             if (file == null) return;
-            var dlg = new Microsoft.Win32.SaveFileDialog();
+            var dlg = new SaveFileDialog();
             dlg.DefaultExt = Path.GetExtension(file.Name);
             dlg.FileName = file.Name;
             if (dlg.ShowDialog() != true) return;
@@ -203,7 +210,8 @@ namespace PilotObjectInfo.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    System.Windows.MessageBox.Show(ex.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Error", System.Windows.MessageBoxButton.OK,
+                        System.Windows.MessageBoxImage.Error);
                 }
             }
         }

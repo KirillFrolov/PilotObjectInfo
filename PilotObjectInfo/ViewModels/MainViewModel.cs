@@ -1,21 +1,17 @@
 ﻿using Ascon.Pilot.SDK;
-using Homebrew.Mvvm.Commands;
-using Homebrew.Mvvm.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reactive;
+using ReactiveUI;
 
 namespace PilotObjectInfo.ViewModels
 {
-    class MainViewModel : ObservableObject
+    class MainViewModel : ReactiveObject
     {
         private IDataObject _obj;
         private IFileProvider _fileProvider;
         private IObjectsRepository _objectsRepository;
         private ITabServiceProvider _tabServiceProvider;
-        private RelayCommand _goToCommand;
+        private ReactiveCommand<Unit, Unit> _goToCommand;
 
         public MainViewModel(IDataObject obj, IObjectsRepository objectsRepository, FileModifier fileModifier, IFileProvider fileProvider, ITabServiceProvider tabServiceProvider)
         {
@@ -69,20 +65,19 @@ namespace PilotObjectInfo.ViewModels
 
         public TypesViewModel TypesVm { get; }
 
-        public RelayCommand GoToCommand
+        public ReactiveCommand<Unit, Unit> GoToCommand
         {
             get
             {
-                if (_goToCommand == null)
+                return _goToCommand ?? (_goToCommand = ReactiveCommand.Create<Unit, Unit>(_ =>
                 {
-                    _goToCommand = new RelayCommand(DoGoTo);
-                }
-                return _goToCommand;
-
+                    DoGoTo();
+                    return Unit.Default;
+                }));
             }
         }
 
-        private void DoGoTo(object obj)
+        private void DoGoTo()
         {
             _tabServiceProvider.ShowElement(Id);
         }
