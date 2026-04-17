@@ -1,24 +1,20 @@
-﻿using Ascon.Pilot.SDK;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using PilotObjectInfo.Models.Core;
+using PilotObjectInfo.Services;
 
 namespace PilotObjectInfo.ViewModels
 {
     class SnapshotViewModel
     {
-        private IFilesSnapshot _filesSnapshot;
-        private IFileProvider _fileProvider;
+        private FilesSnapshot _filesSnapshot;
+        private FileService _fileService;
         private FilesViewModel _files;
 
-        public SnapshotViewModel(Guid objectId,  IFilesSnapshot filesSnapshot, IFileProvider fileProvider)
+        public SnapshotViewModel(Guid objectId, FilesSnapshot filesSnapshot, FileService fileService)
         {
             _filesSnapshot = filesSnapshot;
-            _fileProvider = fileProvider;
-            _files = new FilesViewModel(objectId, _filesSnapshot.Files, fileProvider);
-
+            _fileService = fileService;
+            _files = new FilesViewModel(objectId, filesSnapshot.Files, fileService);
         }
 
         public long Version => _filesSnapshot.Created.Ticks;

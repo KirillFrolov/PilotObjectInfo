@@ -1,9 +1,11 @@
 ﻿using Ascon.Pilot.SDK;
+using PilotObjectInfo.Extensions;
+using PilotObjectInfo.Models.Extensions;
+using PilotObjectInfo.Services;
 using PilotObjectInfo.ViewModels;
 using PilotObjectInfo.Views;
 using System;
 using System.Threading.Tasks;
-using PilotObjectInfo.Extensions;
 
 namespace PilotObjectInfo
 {
@@ -28,7 +30,16 @@ namespace PilotObjectInfo
         public void ShowInfo(IDataObject obj)
         {
             if (obj == null) return;
-            var vm = new MainViewModel(obj, _objectsRepository, _fileModifier, _fileProvider, _tabServiceProvider,
+            
+            // Convert IDataObject to DataObject model
+            var dataObject = obj.ToModel();
+            
+            // Create service wrappers
+            var dataService = new DataService(_objectsRepository);
+            var fileService = new FileService(_fileProvider);
+            var navigationService = new NavigationService(_tabServiceProvider);
+            
+            var vm = new MainViewModel(dataObject, dataService, _fileModifier, fileService, navigationService,
                 _attributeModifier, this);
             var v = new MainView() { DataContext = vm };
             v.Show();

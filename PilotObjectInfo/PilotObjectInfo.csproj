@@ -35,11 +35,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ascon.Pilot.SDK, Version=25.9.0.55929, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ascon.Pilot.SDK.25.9.0\lib\net472\Ascon.Pilot.SDK.dll</HintPath>
+    <Reference Include="Ascon.Pilot.SDK, Version=26.8.0.61079, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ascon.Pilot.SDK.26.8.0\lib\net472\Ascon.Pilot.SDK.dll</HintPath>
     </Reference>
-    <Reference Include="Ascon.Pilot.Theme, Version=25.9.0.55929, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ascon.Pilot.SDK.25.9.0\lib\net472\Ascon.Pilot.Theme.dll</HintPath>
+    <Reference Include="Ascon.Pilot.SDK.Common, Version=26.8.0.61079, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ascon.Pilot.SDK.26.8.0\lib\net472\Ascon.Pilot.SDK.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Ascon.Pilot.Theme, Version=26.8.0.61079, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ascon.Pilot.SDK.26.8.0\lib\net472\Ascon.Pilot.Theme.dll</HintPath>
     </Reference>
     <Reference Include="Ascon.Pilot.VisualElements">
       <HintPath>C:\Program Files\ASCON\Pilot-ICE Enterprise\Ascon.Pilot.VisualElements.dll</HintPath>
@@ -55,6 +58,9 @@
       <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib" />
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="ReactiveUI, Version=20.4.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -127,6 +133,7 @@
     <Compile Include="ViewModels\ChildrenViewModel.cs" />
     <Compile Include="ViewModels\CreatorViewModel.cs" />
     <Compile Include="ViewModels\FilesViewModel.cs" />
+    <Compile Include="ViewModels\HistoryViewModel.cs" />
     <Compile Include="ViewModels\OrgUnitsViewModel.cs" />
     <Compile Include="ViewModels\OrgUnitViewModel.cs" />
     <Compile Include="ViewModels\RelationsViewModel.cs" />
@@ -153,6 +160,9 @@
     </Compile>
     <Compile Include="Views\FilesView.xaml.cs">
       <DependentUpon>FilesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\HistoryView.xaml.cs">
+      <DependentUpon>HistoryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
@@ -190,6 +200,27 @@
     <Compile Include="Views\UserStatesView.xaml.cs">
       <DependentUpon>UserStatesView.xaml</DependentUpon>
     </Compile>
+    <!-- Models - Data wrapper classes -->
+    <Compile Include="Models\Core\DataObject.cs" />
+    <Compile Include="Models\Core\TypeInfo.cs" />
+    <Compile Include="Models\Core\Person.cs" />
+    <Compile Include="Models\Core\StateInfo.cs" />
+    <Compile Include="Models\Core\PilotFile.cs" />
+    <Compile Include="Models\Core\FilesSnapshot.cs" />
+    <Compile Include="Models\Core\RelationInfo.cs" />
+    <Compile Include="Models\Core\AccessRecord.cs" />
+    <Compile Include="Models\Core\UserStateInfo.cs" />
+    <Compile Include="Models\Core\SignatureRequestInfo.cs" />
+    <Compile Include="Models\Support\PositionInfo.cs" />
+    <Compile Include="Models\Support\AttributeTypeInfo.cs" />
+    <Compile Include="Models\Support\OrganisationUnit.cs" />
+    <Compile Include="Models\Mapping\DataObjectMapper.cs" />
+    <Compile Include="Models\Extensions\DataObjectExtensions.cs" />
+    <Compile Include="Models\Examples\DataObjectMappingExamples.cs" />
+    <!-- Services - SDK wrappers -->
+    <Compile Include="Services\FileService.cs" />
+    <Compile Include="Services\DataService.cs" />
+    <Compile Include="Services\NavigationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -216,6 +247,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\HistoryView.xaml" />
     <Page Include="Views\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

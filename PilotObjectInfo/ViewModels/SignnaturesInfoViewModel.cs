@@ -1,18 +1,18 @@
-﻿using Ascon.Pilot.SDK;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
+using PilotObjectInfo.Models.Core;
 using ReactiveUI;
 
 namespace PilotObjectInfo.ViewModels
 {
     class SignnaturesInfoViewModel: ReactiveObject
     {
-        public SignnaturesInfoViewModel(IFile file)
+        public SignnaturesInfoViewModel(PilotFile file)
         {
             File = file;
-            Signatures = new ObservableCollection<ISignatureRequest>(file.SignatureRequests);
+            Signatures = new ObservableCollection<SignatureRequestInfo>(file.SignatureRequests);
         }
 
-        public IFile File { get; set; }
-        public ObservableCollection<ISignatureRequest> Signatures { get; set; }
+        public PilotFile File { get; set; }
+        public ObservableCollection<SignatureRequestInfo> Signatures { get; set; }
     }
 }

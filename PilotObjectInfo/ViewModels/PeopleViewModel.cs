@@ -1,6 +1,6 @@
-﻿using Ascon.Pilot.SDK;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using PilotObjectInfo.Models.Core;
 using ReactiveUI;
 
 namespace PilotObjectInfo.ViewModels
@@ -9,12 +9,12 @@ namespace PilotObjectInfo.ViewModels
     {
         
 
-        public PeopleViewModel(IEnumerable<IPerson> people)
+        public PeopleViewModel(IEnumerable<Person> people)
         {
-            People = new ObservableCollection<IPerson>(people);
+            People = new ObservableCollection<Person>(people);
             
         }
 
-       public ObservableCollection<IPerson> People { get; }
+       public ObservableCollection<Person> People { get; }
     }
 }

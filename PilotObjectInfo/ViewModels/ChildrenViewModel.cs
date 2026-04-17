@@ -1,9 +1,6 @@
-﻿using Ascon.Pilot.SDK;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reactive;
-using System.Text;
 using System.Threading.Tasks;
 using ReactiveUI;
 
@@ -15,7 +12,7 @@ namespace PilotObjectInfo.ViewModels
         private readonly DialogService _dialogService;
         private ReactiveCommand<Guid, Unit> _showInfoCmd;
 
-        public ChildrenViewModel(IEnumerable<Guid> children, 
+        public ChildrenViewModel(List<Guid> children, 
             DialogService dialogService)
         {
             _children = children;

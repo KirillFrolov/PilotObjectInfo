@@ -1,17 +1,17 @@
-﻿using Ascon.Pilot.SDK;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using PilotObjectInfo.Models.Core;
 using ReactiveUI;
 
 namespace PilotObjectInfo.ViewModels
 {
     class UserStatesViewModel : ReactiveObject
     {
-        public UserStatesViewModel(IEnumerable<IUserState> states)
+        public UserStatesViewModel(IEnumerable<UserStateInfo> states)
         {
-            States = new ObservableCollection<IUserState>(states);
+            States = new ObservableCollection<UserStateInfo>(states);
         }
 
-        public ObservableCollection<IUserState> States { get; }
+        public ObservableCollection<UserStateInfo> States { get; }
     }
 }

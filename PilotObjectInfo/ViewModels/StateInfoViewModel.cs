@@ -1,19 +1,19 @@
-﻿using Ascon.Pilot.SDK;
-using System;
+﻿using System;
+using PilotObjectInfo.Models.Core;
 using ReactiveUI;
 
 namespace PilotObjectInfo.ViewModels
 {
     class StateInfoViewModel : ReactiveObject
     {
-        private IStateInfo _stateInfo;
+        private StateInfo _stateInfo;
 
-        public StateInfoViewModel(IStateInfo stateInfo)
+        public StateInfoViewModel(StateInfo stateInfo)
         {
             _stateInfo = stateInfo;
         }
 
-        public string State => _stateInfo.State.ToString();
+        public string State => _stateInfo?.State.ToString();
 
         public DateTime? Date => _stateInfo?.Date;
 

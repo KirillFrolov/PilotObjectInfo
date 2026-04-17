@@ -1,31 +1,24 @@
 ﻿using Ascon.Pilot.SDK;
 using Ascon.Pilot.SDK.Menu;
-using Ascon.Pilot.SDK.Toolbar;
-using PilotObjectInfo.ViewModels;
-using PilotObjectInfo.Views;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PilotObjectInfo
 {
     [Export(typeof(IMenu<StorageContext>))]
     [Export(typeof(IMenu<ObjectsViewContext>))]
     [Export(typeof(IMenu<TasksViewContext2>))]
-    //[Export(typeof(IToolbar<ObjectsViewContext>))]
-    //[Export(typeof(IToolbar<TasksViewContext>))]
-    public class ObjectMenu : IMenu<ObjectsViewContext>, IMenu<StorageContext>, IMenu<TasksViewContext2> //,
-    // IToolbar<ObjectsViewContext>, IToolbar<TasksViewContext>
 
+    public class ObjectMenu : IMenu<ObjectsViewContext>, IMenu<StorageContext>, IMenu<TasksViewContext2> 
     {
         private readonly DialogService _dialogService;
 
         [ImportingConstructor]
-        public ObjectMenu(IObjectsRepository objectsRepository, IFileProvider fileProvider,
-            ITabServiceProvider tabServiceProvider, IObjectModifier objectModifier)
+        public ObjectMenu(
+            IObjectsRepository objectsRepository, 
+            IFileProvider fileProvider,
+            ITabServiceProvider tabServiceProvider, 
+            IObjectModifier objectModifier)
         {
             _dialogService = new DialogService(objectsRepository, fileProvider, tabServiceProvider,
                 new FileModifier(objectModifier, objectsRepository),
@@ -66,6 +59,7 @@ namespace PilotObjectInfo
         {
             if (context.SelectedTasks.Count() > 1 || !context.SelectedTasks.Any()) return;
             IDataObject obj = context.SelectedTasks.First();
+        
             _dialogService.ShowInfo(obj);
         }
 

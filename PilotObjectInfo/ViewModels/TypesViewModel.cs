@@ -1,17 +1,17 @@
-﻿using Ascon.Pilot.SDK;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using PilotObjectInfo.Models.Core;
 using ReactiveUI;
 
 namespace PilotObjectInfo.ViewModels
 {
     class TypesViewModel: ReactiveObject
     {
-        public TypesViewModel(IEnumerable<IType> types)
+        public TypesViewModel(IEnumerable<TypeInfo> types)
         {
-            Types = new ObservableCollection<IType>(types);
+            Types = new ObservableCollection<TypeInfo>(types);
         }
 
-        public ObservableCollection<IType> Types { get; }
+        public ObservableCollection<TypeInfo> Types { get; }
     }
 }

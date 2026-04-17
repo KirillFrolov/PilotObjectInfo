@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using PilotObjectInfo.Extensions;
+using PilotObjectInfo.Models.Core;
+using PilotObjectInfo.Models.Extensions;
 
 namespace PilotObjectInfo
 {
@@ -18,7 +20,7 @@ namespace PilotObjectInfo
             _objectsRepository = objectsRepository;
         }
 
-        public async Task<IEnumerable<IFile>> AddFiles(Guid id, IEnumerable<string> filePaths)
+        public async Task<List<PilotFile>> AddFiles(Guid id, IEnumerable<string> filePaths)
         {
             if (filePaths == null) return null;
             if (!filePaths.Any()) return null;
@@ -30,16 +32,16 @@ namespace PilotObjectInfo
 
             _objectModifier.Apply();
             var obj = await _objectsRepository.GetObjectAsync(id);
-            return obj.ActualFileSnapshot.Files;
+            return obj.ActualFileSnapshot.Files.ToPilotFiles();
         }
 
-        public async Task<IEnumerable<IFile>> RemoveFile(Guid id, IFile file)
+        public async Task<List<PilotFile>> RemoveFile(Guid id, PilotFile file)
         {
             var builder = _objectModifier.EditById(id);
             builder.RemoveFile(file.Id);
             _objectModifier.Apply();
             var obj = await _objectsRepository.GetObjectAsync(id);
-            return obj.ActualFileSnapshot.Files;
+            return obj.ActualFileSnapshot.Files.ToPilotFiles();
         }
     }
 }

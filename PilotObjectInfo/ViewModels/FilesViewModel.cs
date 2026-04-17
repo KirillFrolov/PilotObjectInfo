@@ -8,8 +8,9 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using Ascon.Pilot.SDK;
 using Microsoft.Win32;
+using PilotObjectInfo.Models.Core;
+using PilotObjectInfo.Services;
 using ReactiveUI;
 
 namespace PilotObjectInfo.ViewModels
@@ -17,29 +18,29 @@ namespace PilotObjectInfo.ViewModels
     class FilesViewModel : ReactiveObject
     {
         private Guid _objectId;
-        private ReadOnlyCollection<IFile> _files;
-        private IFileProvider _fileProvider;
+        private List<PilotFile> _files;
+        private FileService _fileService;
         private FileModifier _fileModifier;
-        private ReactiveCommand<IFile, Unit> _downloadCmd;
+        private ReactiveCommand<PilotFile, Unit> _downloadCmd;
         private ReactiveCommand<Unit, Unit> _downloadAllCmd;
         private ReactiveCommand<Unit, Unit> _addFilesCmd;
-        private ReactiveCommand<IFile, Unit> _delFileCmd;
+        private ReactiveCommand<PilotFile, Unit> _delFileCmd;
 
-        public FilesViewModel(Guid objectId, ReadOnlyCollection<IFile> files, IFileProvider fileProvider,
+        public FilesViewModel(Guid objectId, List<PilotFile> files, FileService fileService,
             FileModifier fileModifier = null)
         {
             _objectId = objectId;
-            _files = files;
-            _fileProvider = fileProvider;
+            _files = files ?? new List<PilotFile>();
+            _fileService = fileService;
             _fileModifier = fileModifier;
-            Files = new ObservableCollection<IFile>(_files);
+            Files = new ObservableCollection<PilotFile>(_files);
         }
 
-        public ObservableCollection<IFile> Files { get; set; }
+        public ObservableCollection<PilotFile> Files { get; set; }
 
-        private IFile _selectedFile;
+        private PilotFile _selectedFile;
 
-        public IFile SelectedFile
+        public PilotFile SelectedFile
         {
             get => _selectedFile;
             set
@@ -58,9 +59,9 @@ namespace PilotObjectInfo.ViewModels
             }
         }
 
-        private string GetFileContent(IFile file)
+        private string GetFileContent(PilotFile file)
         {
-            using (var stream = _fileProvider.OpenRead(file))
+            using (var stream = _fileService.OpenRead(file.OriginalFile))
             {
                 var memoryStream = new MemoryStream();
                 stream.CopyTo(memoryStream);
@@ -86,11 +87,11 @@ namespace PilotObjectInfo.ViewModels
             set => this.RaiseAndSetIfChanged(ref _signnaturesInfo, value);
         }
 
-        public ReactiveCommand<IFile, Unit> DownloadCmd
+        public ReactiveCommand<PilotFile, Unit> DownloadCmd
         {
             get
             {
-                return _downloadCmd ?? (_downloadCmd = ReactiveCommand.Create<IFile, Unit>((f) =>
+                return _downloadCmd ?? (_downloadCmd = ReactiveCommand.Create<PilotFile, Unit>((f) =>
                 {
                     DoDownLoad(f);
                     return Unit.Default;
@@ -123,11 +124,11 @@ namespace PilotObjectInfo.ViewModels
             }
         }
 
-        public ReactiveCommand<IFile, Unit> DelFileCmd
+        public ReactiveCommand<PilotFile, Unit> DelFileCmd
         {
             get
             {
-                return _delFileCmd ?? (_delFileCmd = ReactiveCommand.CreateFromTask<IFile, Unit>(async file =>
+                return _delFileCmd ?? (_delFileCmd = ReactiveCommand.CreateFromTask<PilotFile, Unit>(async file =>
                 {
                     await DoDelFile(file);
                     return Unit.Default;
@@ -135,7 +136,7 @@ namespace PilotObjectInfo.ViewModels
             }
         }
 
-        private async Task DoDelFile(IFile file)
+        private async Task DoDelFile(PilotFile file)
         {
             if (file == null) return;
             if (MessageBox.Show($"Do you really want to delete a file: [{file.Name}]?", "Delete file",
@@ -155,12 +156,12 @@ namespace PilotObjectInfo.ViewModels
             Refresh(files);
         }
 
-        private void Refresh(IEnumerable<IFile> files)
+        private void Refresh(IEnumerable<PilotFile> files)
         {
             if (files == null) return;
-            _files = new ReadOnlyCollection<IFile>(files.ToList());
+            _files = files.ToList();
             Files.Clear();
-            _files.ToList().ForEach(x => Files.Add(x));
+            _files.ForEach(x => Files.Add(x));
         }
 
         private void DoDownloadAllCmd()
@@ -172,7 +173,7 @@ namespace PilotObjectInfo.ViewModels
 
                 foreach (var file in _files)
                 {
-                    using (var stream = _fileProvider.OpenRead(file))
+                    using (var stream = _fileService.OpenRead(file.OriginalFile))
                     {
                         try
                         {
@@ -184,22 +185,22 @@ namespace PilotObjectInfo.ViewModels
                         }
                         catch (Exception ex)
                         {
-                            System.Windows.MessageBox.Show(ex.Message, "Error", System.Windows.MessageBoxButton.OK,
-                                System.Windows.MessageBoxImage.Error);
+                            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK,
+                                MessageBoxImage.Error);
                         }
                     }
                 }
             }
         }
 
-        private void DoDownLoad(IFile file)
+        private void DoDownLoad(PilotFile file)
         {
             if (file == null) return;
             var dlg = new SaveFileDialog();
             dlg.DefaultExt = Path.GetExtension(file.Name);
             dlg.FileName = file.Name;
             if (dlg.ShowDialog() != true) return;
-            using (var stream = _fileProvider.OpenRead(file))
+            using (var stream = _fileService.OpenRead(file.OriginalFile))
             {
                 try
                 {
@@ -210,8 +211,8 @@ namespace PilotObjectInfo.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Error", System.Windows.MessageBoxButton.OK,
-                        System.Windows.MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
             }
         }

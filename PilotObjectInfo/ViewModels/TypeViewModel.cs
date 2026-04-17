@@ -1,13 +1,13 @@
-﻿using Ascon.Pilot.SDK;
+﻿using PilotObjectInfo.Models.Core;
 using ReactiveUI;
 
 namespace PilotObjectInfo.ViewModels
 {
 	class TypeViewModel : ReactiveObject
     {
-		private IType _type;
+		private TypeInfo _type;
 
-		public TypeViewModel(IType type)
+		public TypeViewModel(TypeInfo type)
 		{
 			_type = type;
 		}

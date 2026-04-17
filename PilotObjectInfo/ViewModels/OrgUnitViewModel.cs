@@ -1,21 +1,23 @@
-﻿using Ascon.Pilot.SDK;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using PilotObjectInfo.Models.Support;
 using ReactiveUI;
 
 namespace PilotObjectInfo.ViewModels
 {
     class OrgUnitViewModel: ReactiveObject
     {
-        private IOrganisationUnit _organisationUnit;
+        private OrganisationUnit _organisationUnit;
 
-        public OrgUnitViewModel(IEnumerable<IOrganisationUnit> organisationUnits, IOrganisationUnit organisationUnit)
+        public OrgUnitViewModel(List<OrganisationUnit> organisationUnits, OrganisationUnit organisationUnit)
         {
             _organisationUnit = organisationUnit;
-            var children = organisationUnit.Children.Select(x => organisationUnits.FirstOrDefault(y => y.Id == x)).Where(x => x != null);
-            Children = new ObservableCollection<OrgUnitViewModel>(children.Select(x=> new OrgUnitViewModel(organisationUnits, x)));
-
+            var children = organisationUnit.Children
+                .Select(childId => organisationUnits.FirstOrDefault(y => y.Id == childId))
+                .Where(x => x != null);
+            Children = new ObservableCollection<OrgUnitViewModel>(
+                children.Select(x => new OrgUnitViewModel(organisationUnits, x)));
         }
 
         public int Id => _organisationUnit.Id;

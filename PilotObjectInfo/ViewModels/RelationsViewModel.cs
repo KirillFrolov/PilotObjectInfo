@@ -1,38 +1,28 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reactive;
 using System.Threading.Tasks;
-using Ascon.Pilot.SDK;
+using PilotObjectInfo.Models.Core;
 using ReactiveUI;
 
 namespace PilotObjectInfo.ViewModels
 {
     class RelationsViewModel : ReactiveObject
     {
-        private readonly ReadOnlyCollection<IRelation> _relations;
-        private readonly IObjectsRepository _objectsRepository;
-        private readonly IFileProvider _fileProvider;
-        private readonly ITabServiceProvider _tabServiceProvider;
-        private readonly FileModifier _fileModifier;
+        private readonly List<RelationInfo> _relations;
         private readonly DialogService _dialogService;
         private ReactiveCommand<Guid, Unit> _showInfoCmd;
 
-        public RelationsViewModel(ReadOnlyCollection<IRelation> relations,
-            IObjectsRepository objectsRepository,
-            IFileProvider fileProvider,
-            ITabServiceProvider tabServiceProvider,
-            FileModifier fileModifier,
+        public RelationsViewModel(List<RelationInfo> relations,
             DialogService dialogService)
         {
             _relations = relations;
-            _objectsRepository = objectsRepository;
-            _fileProvider = fileProvider;
-            _tabServiceProvider = tabServiceProvider;
-            _fileModifier = fileModifier;
             _dialogService = dialogService;
         }
 
-        public ReadOnlyCollection<IRelation> Relations => _relations;
+        public List<RelationInfo> Relations => _relations;
 
         public ReactiveCommand<Guid, Unit> ShowInfoCmd
         {

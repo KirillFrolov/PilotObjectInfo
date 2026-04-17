@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reactive;
 using System.Threading.Tasks;
 using Ascon.Pilot.SDK;
+using PilotObjectInfo.Models.Core;
 using ReactiveUI;
 
 namespace PilotObjectInfo.ViewModels
@@ -15,17 +16,17 @@ namespace PilotObjectInfo.ViewModels
 
         private ReactiveCommand<KeyValuePair<string, string>, Unit> _deleteAttributeCmd;
         private readonly Guid _id;
-        private readonly IType _type;
+        private readonly TypeInfo _type;
 
 
 
-        public AttributesViewModel(IDataObject obj, AttributeModifier attributeModifier)
+        public AttributesViewModel(Guid id, Dictionary<string, object> attributes, TypeInfo type, AttributeModifier attributeModifier)
         {
-            _id = obj.Id;
-            _type = obj.Type;
+            _id = id;
+            _type = type;
             _attributeModifier = attributeModifier;
             Attributes = new ObservableCollection<KeyValuePair<string, string>>();
-            InitAttributes(obj.Attributes);
+            InitAttributes(attributes);
         }
 
         private void InitAttributes(IDictionary<string, object> attributes)
