@@ -43,6 +43,7 @@
             <TextBox Text="{Binding Id, Mode=OneWay}"/>
             <Button Content="Go to"
                     Command="{Binding GoToCommand}"
+                    CommandParameter="{Binding Id}"
                     Margin="5,0,0,0"/>
         </StackPanel>
 
@@ -71,9 +72,15 @@
         <TextBlock Grid.Row="4"
                    Grid.Column="0"
                    Text="ParentId"/>
-        <TextBox Grid.Row="4"
+        <StackPanel Grid.Row="4"
                    Grid.Column="1"
-                   Text="{Binding ParentId, Mode=OneWay}"/>
+                    Orientation="Horizontal">
+            <TextBox Text="{Binding ParentId, Mode=OneWay}"/>
+            <Button Content="Go to"
+                    Command="{Binding GoToCommand}"
+                    CommandParameter="{Binding ParentId}"
+                    Margin="5,0,0,0"/>
+        </StackPanel>
         <TextBlock Grid.Row="5"
                    Grid.Column="0"
                    Text="CurrentUserId"/>

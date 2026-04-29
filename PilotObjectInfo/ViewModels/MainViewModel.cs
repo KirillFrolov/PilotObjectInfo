@@ -11,7 +11,7 @@ namespace PilotObjectInfo.ViewModels
         private FileService _fileService;
         private readonly DataService _dataService;
         private readonly NavigationService _navigationService;
-        private ReactiveCommand<Unit, Unit> _goToCommand;
+        private ReactiveCommand<Guid, Unit> _goToCommand;
 
         public MainViewModel(DataObject obj, DataService dataService, FileModifier fileModifier,
             FileService fileService, NavigationService navigationService,
@@ -75,21 +75,24 @@ namespace PilotObjectInfo.ViewModels
 
         public TypesViewModel TypesVm { get; }
 
-        public ReactiveCommand<Unit, Unit> GoToCommand
+        public ReactiveCommand<Guid, Unit> GoToCommand
         {
             get
             {
-                return _goToCommand ?? (_goToCommand = ReactiveCommand.Create<Unit, Unit>(_ =>
+                return _goToCommand ?? (_goToCommand = ReactiveCommand.Create<Guid, Unit>(id =>
                 {
-                    DoGoTo();
+                    DoGoTo(id);
                     return Unit.Default;
                 }));
             }
         }
 
-        private void DoGoTo()
+        private void DoGoTo(Guid id)
         {
-            _navigationService.ShowElement(Id);
+            if (id == Guid.Empty)
+                return;
+            
+            _navigationService.ShowElement(id);
         }
     }
 }
