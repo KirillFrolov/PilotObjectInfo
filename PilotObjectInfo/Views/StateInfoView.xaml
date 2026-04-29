@@ -3,9 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:tools="clr-namespace:Ascon.Pilot.Theme.Tools;assembly=Ascon.Pilot.Theme"
+             xmlns:theme="clr-namespace:Ascon.Pilot.Theme;assembly=Ascon.Pilot.Theme"
              xmlns:local="clr-namespace:PilotObjectInfo.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <tools:SharedResourceDictionary Source="/Ascon.Pilot.Theme;component/Themes/sharedresources/sharedresources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
 
         <Grid.RowDefinitions>
@@ -21,31 +30,55 @@
 
         <TextBlock Grid.Row="0"
                    Grid.Column="0"
-                   Text="State"/>
+                   Text="State"
+                   Style="{StaticResource {theme:StyleKey DialogTextBlockStyle}}"
+                   VerticalAlignment="Center"
+                   Margin="5"/>
         <TextBox  Grid.Row="0"
                    Grid.Column="1"
-                   Text="{Binding State, Mode=OneWay}"/>
+                   Text="{Binding State, Mode=OneWay}"
+                   Style="{StaticResource {theme:StyleKey ReadOnlyTextBoxStyle}}"
+                   VerticalAlignment="Center"
+                   Margin="5"/>
 
         <TextBlock Grid.Row="1"
                    Grid.Column="0"
-                   Text="Date"/>
+                   Text="Date"
+                   Style="{StaticResource {theme:StyleKey DialogTextBlockStyle}}"
+                   VerticalAlignment="Center"
+                   Margin="5"/>
         <TextBox  Grid.Row="1"
                    Grid.Column="1"
-                   Text="{Binding Date, Mode=OneWay}"/>
+                   Text="{Binding Date, Mode=OneWay}"
+                   Style="{StaticResource {theme:StyleKey ReadOnlyTextBoxStyle}}"
+                   VerticalAlignment="Center"
+                   Margin="5"/>
 
         <TextBlock Grid.Row="2"
                    Grid.Column="0"
-                   Text="PersonId"/>
+                   Text="PersonId"
+                   Style="{StaticResource {theme:StyleKey DialogTextBlockStyle}}"
+                   VerticalAlignment="Center"
+                   Margin="5"/>
         <TextBox  Grid.Row="2"
                    Grid.Column="1"
-                   Text="{Binding PersonId, Mode=OneWay}"/>
+                   Text="{Binding PersonId, Mode=OneWay}"
+                   Style="{StaticResource {theme:StyleKey ReadOnlyTextBoxStyle}}"
+                   VerticalAlignment="Center"
+                   Margin="5"/>
 
         <TextBlock Grid.Row="3"
                    Grid.Column="0"
-                   Text="PositionId"/>
+                   Text="PositionId"
+                   Style="{StaticResource {theme:StyleKey DialogTextBlockStyle}}"
+                   VerticalAlignment="Center"
+                   Margin="5"/>
         <TextBox  Grid.Row="3"
                    Grid.Column="1"
-                   Text="{Binding PositionId, Mode=OneWay}"/>
+                   Text="{Binding PositionId, Mode=OneWay}"
+                   Style="{StaticResource {theme:StyleKey ReadOnlyTextBoxStyle}}"
+                   VerticalAlignment="Center"
+                   Margin="5"/>
         
     </Grid>
 </UserControl>

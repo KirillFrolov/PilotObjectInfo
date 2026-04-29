@@ -1,0 +1,40 @@
+name: Release Build
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v2
+      
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+      
+    - name: Restore NuGet packages
+      run: nuget restore PilotObjectInfo.sln
+      
+    - name: Build solution
+      run: msbuild PilotObjectInfo.sln /p:Configuration=Release /p:Platform="Any CPU" /p:OutputPath=bin\Release\
+      
+    - name: Create release archive
+      run: |
+        $sourcePath = "PilotObjectInfo\bin\Release\*"
+        $destinationPath = "PilotObjectInfo.ext2.zip"
+        Compress-Archive -Path $sourcePath -DestinationPath $destinationPath -Force
+      shell: pwsh
+      
+    - name: Create Release and Upload Asset
+      uses: softprops/action-gh-release@v1
+      with:
+        files: PilotObjectInfo.ext2.zip
+        token: ${{ secrets.GITHUB_TOKEN }}
+
