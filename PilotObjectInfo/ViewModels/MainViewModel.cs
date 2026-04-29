@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reactive;
+using System.Threading.Tasks;
 using PilotObjectInfo.Models.Core;
 using PilotObjectInfo.Services;
 using ReactiveUI;
@@ -11,7 +12,9 @@ namespace PilotObjectInfo.ViewModels
         private FileService _fileService;
         private readonly DataService _dataService;
         private readonly NavigationService _navigationService;
+        private readonly DialogService _dialogService;
         private ReactiveCommand<Guid, Unit> _goToCommand;
+        private ReactiveCommand<Guid, Unit> _showInfoCommand;
 
         public MainViewModel(DataObject obj, DataService dataService, FileModifier fileModifier,
             FileService fileService, NavigationService navigationService,
@@ -20,6 +23,7 @@ namespace PilotObjectInfo.ViewModels
             _fileService = fileService;
             _dataService = dataService;
             _navigationService = navigationService;
+            _dialogService = dialogService;
 
             AttributesVm = new AttributesViewModel(obj.Id, obj.Attributes, obj.Type, attributeModifier);
             TypeVm = new TypeViewModel(obj.Type);
@@ -28,9 +32,9 @@ namespace PilotObjectInfo.ViewModels
             SnapshotsVm = new SnapshotsViewModel(obj.Id, obj.PreviousFileSnapshots, _fileService);
 
             AccessVm = new AccessViewModel(obj.Access2);
-            RelationsVm = new RelationsViewModel(obj.Relations, dialogService);
+            RelationsVm = new RelationsViewModel(obj.Relations, dialogService, navigationService);
             StateInfoVm = new StateInfoViewModel(obj.ObjectStateInfo);
-            ChildrenVm = new ChildrenViewModel(obj.Children, dialogService);
+            ChildrenVm = new ChildrenViewModel(obj.Children, dialogService, navigationService);
             PeopleVm = new PeopleViewModel(_dataService.GetPeople());
             OrgUnitsVm = new OrgUnitsViewModel(_dataService.GetOrganisationUnits());
             TypesVm = new TypesViewModel(_dataService.GetTypes());
@@ -87,12 +91,32 @@ namespace PilotObjectInfo.ViewModels
             }
         }
 
+        public ReactiveCommand<Guid, Unit> ShowInfoCommand
+        {
+            get
+            {
+                return _showInfoCommand ?? (_showInfoCommand = ReactiveCommand.CreateFromTask<Guid, Unit>(async id =>
+                {
+                    await DoShowInfo(id);
+                    return Unit.Default;
+                }));
+            }
+        }
+
         private void DoGoTo(Guid id)
         {
             if (id == Guid.Empty)
                 return;
             
             _navigationService.ShowElement(id);
+        }
+
+        private async Task DoShowInfo(Guid id)
+        {
+            if (id == Guid.Empty)
+                return;
+            
+            await _dialogService.ShowInfoAsync(id);
         }
     }
 }

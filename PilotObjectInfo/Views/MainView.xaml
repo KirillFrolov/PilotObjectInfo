@@ -76,6 +76,10 @@
                    Grid.Column="1"
                     Orientation="Horizontal">
             <TextBox Text="{Binding ParentId, Mode=OneWay}"/>
+            <Button Content="Show info"
+                    Command="{Binding ShowInfoCommand}"
+                    CommandParameter="{Binding ParentId}"
+                    Margin="5,0,0,0"/>
             <Button Content="Go to"
                     Command="{Binding GoToCommand}"
                     CommandParameter="{Binding ParentId}"
