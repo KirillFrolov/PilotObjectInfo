@@ -142,6 +142,7 @@
   <ItemGroup>
     <Compile Include="AttributeModifier.cs" />
     <Compile Include="Behaviors\DataGridSelectedItemsBehavior.cs" />
+    <Compile Include="Converters\SvgBytesToImageConverter.cs" />
     <Compile Include="DialogService.cs" />
     <Compile Include="DialogService.cs" />
     <Compile Include="Extensions\ObjectsRepositoryEx.cs" />

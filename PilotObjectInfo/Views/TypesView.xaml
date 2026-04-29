@@ -4,11 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PilotObjectInfo.Views"
-             xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
+             xmlns:converters="clr-namespace:PilotObjectInfo.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <svgc:SvgImageConverterExtension x:Key="SvgImageConverter"/>
+        <converters:SvgBytesToImageConverter x:Key="SvgConverter"/>
     </UserControl.Resources>
     <Grid>
         <DataGrid ItemsSource="{Binding Types}"
@@ -19,7 +19,7 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Image Source="{Binding SvgIcon, Converter={StaticResource SvgImageConverter}}"
+                            <Image Source="{Binding SvgIcon, Converter={StaticResource SvgConverter}}"
                                    Width="16" Height="16"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
