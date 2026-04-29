@@ -20,7 +20,9 @@ jobs:
       uses: microsoft/setup-msbuild@v2
       
     - name: Restore NuGet packages
-      run: nuget restore PilotObjectInfo.sln
+      run: |
+        nuget sources Add -Name "nuget.org" -Source "https://api.nuget.org/v3/index.json" -NonInteractive || echo "Source already exists"
+        nuget restore PilotObjectInfo.sln
       
     - name: Build solution
       run: msbuild PilotObjectInfo.sln /p:Configuration=Release /p:Platform="Any CPU" /p:OutputPath=bin\Release\

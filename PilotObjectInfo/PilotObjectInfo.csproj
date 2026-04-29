@@ -65,26 +65,26 @@
     <Reference Include="ReactiveUI.Wpf, Version=20.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ReactiveUI.WPF.20.4.1\lib\net472\ReactiveUI.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="SharpVectors.Converters.Wpf, Version=1.8.3.0, Culture=neutral, PublicKeyToken=b532964b8548be77, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpVectors.Reloaded.1.8.3\lib\net472\SharpVectors.Converters.Wpf.dll</HintPath>
+    <Reference Include="SharpVectors.Converters.Wpf">
+      <HintPath>..\packages\SharpVectors.1.8.4\lib\net45\SharpVectors.Converters.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="SharpVectors.Core, Version=1.8.3.0, Culture=neutral, PublicKeyToken=d0902381100df30e, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpVectors.Reloaded.1.8.3\lib\net472\SharpVectors.Core.dll</HintPath>
+    <Reference Include="SharpVectors.Core">
+      <HintPath>..\packages\SharpVectors.1.8.4\lib\net45\SharpVectors.Core.dll</HintPath>
     </Reference>
-    <Reference Include="SharpVectors.Css, Version=1.8.3.0, Culture=neutral, PublicKeyToken=7407205e337c98ef, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpVectors.Reloaded.1.8.3\lib\net472\SharpVectors.Css.dll</HintPath>
+    <Reference Include="SharpVectors.Css">
+      <HintPath>..\packages\SharpVectors.1.8.4\lib\net45\SharpVectors.Css.dll</HintPath>
     </Reference>
-    <Reference Include="SharpVectors.Dom, Version=1.8.3.0, Culture=neutral, PublicKeyToken=517340b6277b1a7a, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpVectors.Reloaded.1.8.3\lib\net472\SharpVectors.Dom.dll</HintPath>
+    <Reference Include="SharpVectors.Dom">
+      <HintPath>..\packages\SharpVectors.1.8.4\lib\net45\SharpVectors.Dom.dll</HintPath>
     </Reference>
-    <Reference Include="SharpVectors.Model, Version=1.8.3.0, Culture=neutral, PublicKeyToken=2a01bde84a46be87, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpVectors.Reloaded.1.8.3\lib\net472\SharpVectors.Model.dll</HintPath>
+    <Reference Include="SharpVectors.Model">
+      <HintPath>..\packages\SharpVectors.1.8.4\lib\net45\SharpVectors.Model.dll</HintPath>
     </Reference>
-    <Reference Include="SharpVectors.Rendering.Wpf, Version=1.8.3.0, Culture=neutral, PublicKeyToken=d0902381100df30e, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpVectors.Reloaded.1.8.3\lib\net472\SharpVectors.Rendering.Wpf.dll</HintPath>
+    <Reference Include="SharpVectors.Rendering.Wpf">
+      <HintPath>..\packages\SharpVectors.1.8.4\lib\net45\SharpVectors.Rendering.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="SharpVectors.Runtime.Wpf, Version=1.8.3.0, Culture=neutral, PublicKeyToken=d16e717f0a981fb9, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpVectors.Reloaded.1.8.3\lib\net472\SharpVectors.Runtime.Wpf.dll</HintPath>
+    <Reference Include="SharpVectors.Runtime.Wpf">
+      <HintPath>..\packages\SharpVectors.1.8.4\lib\net45\SharpVectors.Runtime.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="Splat, Version=15.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Splat.15.3.1\lib\netstandard2.0\Splat.dll</HintPath>

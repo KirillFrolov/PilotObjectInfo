@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Text;
 using System.Windows.Data;
 using System.Windows.Media;
 using SharpVectors.Converters;
@@ -23,8 +22,7 @@ namespace PilotObjectInfo.Converters
             _settings = new WpfDrawingSettings
             {
                 IncludeRuntime = false,
-                TextAsGeometry = true,
-                OptimizePath = true
+                TextAsGeometry = true
             };
         }
 
@@ -52,7 +50,7 @@ namespace PilotObjectInfo.Converters
                     var converter = new FileSvgReader(_settings);
                     var drawingGroup = converter.Read(stream);
 
-                    if (drawingGroup == null || drawingGroup.Children.Count == 0)
+                    if (drawingGroup == null)
                     {
                         Debug.WriteLine("SvgToDrawingConverter: No drawable content");
                         return null;
@@ -61,14 +59,13 @@ namespace PilotObjectInfo.Converters
                     var drawingImage = new DrawingImage(drawingGroup);
                     drawingImage.Freeze();
 
-                    Debug.WriteLine($"SvgToDrawingConverter: Successfully converted SVG with {drawingGroup.Children.Count} elements");
+                    Debug.WriteLine($"SvgToDrawingConverter: Successfully converted SVG");
                     return drawingImage;
                 }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"SvgToDrawingConverter: Error - {ex.Message}");
-                Debug.WriteLine($"SvgToDrawingConverter: Stack trace - {ex.StackTrace}");
                 return null;
             }
         }
