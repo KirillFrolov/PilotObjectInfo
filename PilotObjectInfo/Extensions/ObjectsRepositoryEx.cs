@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using Ascon.Pilot.SDK;
+using Ascon.Pilot.SDK.Data;
 
 namespace PilotObjectInfo.Extensions
 {
@@ -39,6 +40,20 @@ namespace PilotObjectInfo.Extensions
                 .SubscribeObjects(loading)
                 .ObserveOnDispatcher(DispatcherPriority.Background)
                 .Where(o => o.State == DataState.Loaded)
+                .Distinct(o => o.Id)
+                .Take(loading.Count)
+                .ToList();
+        }
+        
+        private static IObservable<IList<IHistoryItem>> GetHistoryObservableList(
+            IObjectsRepository repository,
+            IEnumerable<Guid> ids)
+        {
+            var loading = ids.ToList();
+            return repository
+                .GetHistoryItems(loading)
+                .ObserveOnDispatcher(DispatcherPriority.Background)
+                .Where(o => o.Object.State == DataState.Loaded)
                 .Distinct(o => o.Id)
                 .Take(loading.Count)
                 .ToList();
@@ -94,6 +109,18 @@ namespace PilotObjectInfo.Extensions
             {
                 var lazy = observableList.Wait();
                 return lazy.FirstOrDefault();
+            });
+        }
+        
+        public static Task<IList<IHistoryItem>> GetHistoryItemsAsync(this IObjectsRepository repository, Guid id)
+        {
+            var loading = new[] { id };
+            var observableList = GetHistoryObservableList(repository, loading);
+
+            return Task<IList<IHistoryItem>>.Factory.StartNew(() =>
+            {
+                var lazy = observableList.Wait();
+                return lazy;
             });
         }
     }

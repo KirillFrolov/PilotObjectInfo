@@ -53,6 +53,11 @@ namespace PilotObjectInfo.Services
         {
             return _objectsRepository.GetCurrentPerson().ToModel();
         }
+
+        public IObjectsRepository GetRepository()
+        {
+            return _objectsRepository;
+        }
     }
 }
 

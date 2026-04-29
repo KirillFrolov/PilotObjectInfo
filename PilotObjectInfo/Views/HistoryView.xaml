@@ -7,6 +7,40 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        
+        <DataGrid ItemsSource="{Binding HistoryItems}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  ClipboardCopyMode="IncludeHeader">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" 
+                                    Binding="{Binding Id, Mode=OneWay}"
+                                    Width="250"/>
+                <DataGridTextColumn Header="Date"
+                                    Binding="{Binding Created, Mode=OneWay, StringFormat='{}{0:yyyy-MM-dd HH:mm:ss}'}"
+                                    Width="150"/>
+                <DataGridTextColumn Header="Reason"
+                                    Binding="{Binding Reason, Mode=OneWay}"
+                                    Width="200"/>
+                <DataGridTextColumn Header="ObjectId"
+                                    Binding="{Binding ObjectId, Mode=OneWay}"
+                                    Width="250"/>
+                <DataGridTextColumn Header="DisplayName"
+                                    Binding="{Binding DisplayName, Mode=OneWay}"
+                                    Width="*"/>
+                <DataGridTemplateColumn Width="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Command="{Binding Path=DataContext.ShowInfoCmd,
+                                RelativeSource={RelativeSource Mode=FindAncestor, 
+                                AncestorType={x:Type UserControl}}}"
+                                    CommandParameter="{Binding Object}" 
+                                    Content="Show info"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </UserControl>

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Ascon.Pilot.SDK;
+using Ascon.Pilot.SDK.Data;
 
 namespace PilotObjectInfo.Models.Mapping
 {
@@ -13,7 +14,7 @@ namespace PilotObjectInfo.Models.Mapping
         /// <summary>
         /// Converts IDataObject to DataObject
         /// </summary>
-        public static Core.DataObject ToDataObject(IDataObject source)
+        public static Core.DataObject ToDataObject(this IDataObject source)
         {
             if (source == null)
                 return null;
@@ -35,7 +36,8 @@ namespace PilotObjectInfo.Models.Mapping
                 IsDeleted = source.IsDeleted,
                 IsInRecycleBin = source.IsInRecycleBin,
                 ActualFileSnapshot = source.ActualFileSnapshot?.ToFilesSnapshot(),
-                LockInfo = source.LockInfo // Keep as object
+                LockInfo = source.LockInfo, // Keep as object,
+                HistoryItems = source.HistoryItems()
             };
 
             // Map collections
@@ -336,6 +338,25 @@ namespace PilotObjectInfo.Models.Mapping
             return new Core.SignatureRequestInfo
             {
                 Id = source.GetHashCode() // Use hashcode as simple ID
+            };
+        }
+
+        /// <summary>
+        /// Converts IHistoryItem to HistoryItem
+        /// </summary>
+        public static Core.HistoryItem ToHistoryItem(this IHistoryItem source)
+        {
+            if (source == null)
+                return null;
+
+            return new Core.HistoryItem
+            {
+                Id = source.Id,
+                Created = source.Created,
+                Reason = source.Reason,
+                ObjectId = source.Object?.Id ?? Guid.Empty,
+                DisplayName = source.Object?.DisplayName ?? string.Empty,
+                Object = source.Object?.ToDataObject()
             };
         }
     }

@@ -35,12 +35,14 @@ namespace PilotObjectInfo.ViewModels
             OrgUnitsVm = new OrgUnitsViewModel(_dataService.GetOrganisationUnits());
             TypesVm = new TypesViewModel(_dataService.GetTypes());
             UserStatesVm = new UserStatesViewModel(_dataService.GetUserStates());
+            HistoryVm = new HistoryViewModel(obj.HistoryItems, _dataService.GetRepository(), dialogService);
 
             Id = obj.Id;
             DisplayName = obj.DisplayName;
             Created = obj.Created;
             IsSecret = obj.IsSecret;
             ParentId = obj.ParentId;
+            
         }
 
         public Guid Id { get; }

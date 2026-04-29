@@ -211,6 +211,7 @@
     <Compile Include="Models\Core\AccessRecord.cs" />
     <Compile Include="Models\Core\UserStateInfo.cs" />
     <Compile Include="Models\Core\SignatureRequestInfo.cs" />
+    <Compile Include="Models\Core\HistoryItem.cs" />
     <Compile Include="Models\Support\PositionInfo.cs" />
     <Compile Include="Models\Support\AttributeTypeInfo.cs" />
     <Compile Include="Models\Support\OrganisationUnit.cs" />

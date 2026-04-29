@@ -112,7 +112,7 @@
                 <local:RelationsView DataContext="{Binding RelationsVm, Mode=OneWay}"/>
             </TabItem>
             <TabItem Header="History">
-                <local:RelationsView DataContext="{Binding HistoryVm, Mode=OneWay}"/>
+                <local:HistoryView DataContext="{Binding HistoryVm, Mode=OneWay}"/>
             </TabItem>
             <TabItem Header="People">
                 <local:PeopleView DataContext="{Binding PeopleVm, Mode=OneWay}"/>

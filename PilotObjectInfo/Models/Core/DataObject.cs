@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Ascon.Pilot.SDK;
 
 namespace PilotObjectInfo.Models.Core
@@ -73,6 +74,8 @@ namespace PilotObjectInfo.Models.Core
 
         [Obsolete("Property is deprecated. Use ObjectStateInfo instead.")]
         public object LockInfo { get; set; }
+
+        public ReadOnlyCollection<Guid> HistoryItems { get; set; }
     }
 }
 

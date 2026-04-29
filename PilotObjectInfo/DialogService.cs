@@ -1,5 +1,6 @@
 ﻿using Ascon.Pilot.SDK;
 using PilotObjectInfo.Extensions;
+using PilotObjectInfo.Models.Core;
 using PilotObjectInfo.Models.Extensions;
 using PilotObjectInfo.Services;
 using PilotObjectInfo.ViewModels;
@@ -34,6 +35,13 @@ namespace PilotObjectInfo
             // Convert IDataObject to DataObject model
             var dataObject = obj.ToModel();
             
+            ShowInfo(dataObject);
+        }
+
+        public void ShowInfo(DataObject dataObject)
+        {
+            if (dataObject == null) return;
+            
             // Create service wrappers
             var dataService = new DataService(_objectsRepository);
             var fileService = new FileService(_fileProvider);
@@ -48,6 +56,7 @@ namespace PilotObjectInfo
         public async Task ShowInfoAsync(Guid id)
         {
             var obj = await _objectsRepository.GetObjectAsync(id);
+            
             ShowInfo(obj);
         }
     }
