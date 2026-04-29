@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Text;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
@@ -9,6 +10,8 @@ namespace PilotObjectInfo.Converters
 {
     public class ByteImageConverter : IValueConverter
     {
+        private readonly SvgToDrawingConverter _svgConverter = new SvgToDrawingConverter();
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null)
@@ -34,12 +37,11 @@ namespace PilotObjectInfo.Converters
 
             try
             {
-                // Check if this is SVG data (starts with '<' or '<?xml')
-                if (bytes.Length > 0 && (bytes[0] == '<' || (bytes.Length > 5 && bytes[0] == 0x3C)))
+                // Check if this is SVG data
+                if (IsSvg(bytes))
                 {
-                    Debug.WriteLine("ByteImageConverter: Detected SVG format - not supported yet");
-                    // SVG rendering requires additional libraries
-                    return null;
+                    Debug.WriteLine("ByteImageConverter: Detected SVG format, delegating to SvgConverter");
+                    return _svgConverter.Convert(value, targetType, parameter, culture);
                 }
                 
                 // Try to load as regular bitmap image (PNG, JPEG, BMP, etc.)
@@ -63,6 +65,29 @@ namespace PilotObjectInfo.Converters
                 Debug.WriteLine($"ByteImageConverter: Failed to load image - {ex.Message}");
                 return null;
             }
+        }
+
+        private bool IsSvg(byte[] bytes)
+        {
+            if (bytes.Length < 5)
+                return false;
+
+            // Check for '<' at start (SVG XML)
+            if (bytes[0] == '<' || bytes[0] == 0x3C)
+            {
+                // Try to parse the beginning as string to verify it's SVG
+                try
+                {
+                    var start = Encoding.UTF8.GetString(bytes, 0, Math.Min(100, bytes.Length));
+                    return start.Contains("<svg") || start.Contains("<?xml");
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+
+            return false;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
