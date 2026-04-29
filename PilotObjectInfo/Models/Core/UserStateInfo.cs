@@ -14,5 +14,9 @@ namespace PilotObjectInfo.Models.Core
         public string Name { get; set; }
         
         public bool IsDeleted { get; set; }
+        
+        public string Color { get; set; }
+        
+        public byte[] Icon { get; set; }
     }
 }

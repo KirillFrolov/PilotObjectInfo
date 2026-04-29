@@ -18,6 +18,7 @@ namespace PilotObjectInfo.ViewModels
 		public bool IsMountable => _type.IsMountable;
 		public bool IsProject => _type.IsProject;
 		public bool IsService => _type.IsService;
+		public byte[] SvgIcon => _type.SvgIcon;
 		
 	}
 }

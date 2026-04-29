@@ -125,7 +125,8 @@ namespace PilotObjectInfo.Models.Mapping
                 Kind = source.Kind,
                 IsMountable = source.IsMountable,
                 IsProject = source.IsProject,
-                IsService = source.IsService
+                IsService = source.IsService,
+                SvgIcon = source.SvgIcon
             };
 
             if (source.Attributes != null)
@@ -322,7 +323,9 @@ namespace PilotObjectInfo.Models.Mapping
                 Id = source.Id,
                 Title = source.Title,
                 Name = source.Name,
-                IsDeleted = source.IsDeleted
+                IsDeleted = source.IsDeleted,
+                Color = source.Color.ToString(),
+                Icon = source.Icon
             };
         }
 
