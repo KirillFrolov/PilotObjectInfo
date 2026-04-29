@@ -24,6 +24,8 @@ namespace PilotObjectInfo.Models.Core
         
         public bool IsService { get; set; }
         
+        public bool IsDeleted { get; set; }
+        
         public byte[] SvgIcon { get; set; }
         
         public List<AttributeTypeInfo> Attributes { get; set; } = new List<AttributeTypeInfo>();

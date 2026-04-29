@@ -126,6 +126,7 @@ namespace PilotObjectInfo.Models.Mapping
                 IsMountable = source.IsMountable,
                 IsProject = source.IsProject,
                 IsService = source.IsService,
+                IsDeleted = source.IsDeleted,
                 SvgIcon = source.SvgIcon
             };
 
