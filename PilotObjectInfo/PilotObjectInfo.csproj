@@ -44,10 +44,6 @@
     <Reference Include="Ascon.Pilot.Theme, Version=26.8.0.61079, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Ascon.Pilot.SDK.26.8.0\lib\net472\Ascon.Pilot.Theme.dll</HintPath>
     </Reference>
-    <Reference Include="Ascon.Pilot.VisualElements">
-      <HintPath>C:\Program Files\ASCON\Pilot-ICE Enterprise\Ascon.Pilot.VisualElements.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="DynamicData, Version=9.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DynamicData.9.4.1\lib\net462\DynamicData.dll</HintPath>
     </Reference>
@@ -125,6 +121,7 @@
   <ItemGroup>
     <Compile Include="AttributeModifier.cs" />
     <Compile Include="Behaviors\DataGridSelectedItemsBehavior.cs" />
+    <Compile Include="Converters\ByteImageConverter.cs" />
     <Compile Include="DialogService.cs" />
     <Compile Include="Extensions\ObjectsRepositoryEx.cs" />
     <Compile Include="FileModifier.cs" />
